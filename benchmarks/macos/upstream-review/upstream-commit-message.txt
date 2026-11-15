@@ -1,0 +1,20 @@
+Use four-block NEON ChaCha on little-endian AArch64
+
+Process four complete blocks across Advanced SIMD lanes. Preserve the
+twenty rounds, 64-bit counter and nonce, both key sizes, counter carry
+and wrap, and streaming keystream cache. Keep scalar processing for
+short inputs and tails.
+
+Select the private helper only when the compiler advertises AArch64,
+NEON and little-endian byte order. General-register-only builds retain
+scalar processing. This is intrinsic C, so OPENSSL_NO_ASM does not
+suppress it: Portable also defines that macro automatically on normal
+macOS/AArch64 builds without an assembly backend.
+
+Add public-API regressions against single-byte scalar processing for
+bulk boundaries, alignments, counter carry and wrap, both key sizes,
+in-place split writes, cached zero-length calls and continued output.
+Check cache lengths before comparing live state. Public interfaces,
+context layout and exported symbols are unchanged.
+
+Developed with Codex assistance and reviewed with an Astra model.

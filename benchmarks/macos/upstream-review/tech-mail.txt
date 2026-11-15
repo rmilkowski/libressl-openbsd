@@ -1,72 +1,68 @@
 To: tech@openbsd.org
-Subject: libcrypto: AArch64 NEON ChaCha prototype (AI-assisted)
+Subject: libcrypto: four-block NEON ChaCha on little-endian arm64
 
-This is an AI-assisted prototype for discussion, not a claim that its
-provenance is acceptable for import. It was developed with Codex and
-reviewed by an Astra model; review findings were fixed and tests rerun.
-I am disclosing that before asking for consideration.
+This adds a private four-block ChaCha helper using baseline Advanced
+SIMD on little-endian AArch64. Short inputs and tails keep scalar
+processing. The twenty rounds, both key sizes, 64-bit counter/nonce,
+carry and wrap, public context and streaming cache are preserved.
 
-OpenBSD developer discussions have raised serious objections to AI-
-generated code provenance. Please clarify whether this prototype or only
-the benchmark evidence would be useful. No independent human provenance
-approval is being asserted.
+The target guard requires compiler-advertised AArch64, NEON and
+little-endian byte order. Compiler targets without NEON, including
+-mgeneral-regs-only, retain scalar code. This is intrinsic C;
+OPENSSL_NO_ASM must not disable it because Portable sets that macro
+automatically on macOS/AArch64 builds without an assembly backend.
 
-The diff adds a private four-block NEON helper for little-endian AArch64
-with compiler-advertised Advanced SIMD. It retains all twenty rounds,
-the 64-bit counter/nonce, carry/wrap, both key sizes, the public context
-layout and the cached-keystream wrapper. Short calls and tails remain
-scalar. There are no protocol or concurrency changes.
+The existing public regression gains bulk-boundary, alignment, counter,
+in-place, split/cache, zero-length and continuation coverage against
+single-byte calls, which cannot reach the helper. Cache-state
+comparisons validate their lengths before pointer arithmetic.
 
-This is C intrinsics, not an assembly backend. OPENSSL_NO_ASM is not a
-SIMD opt-out: Portable sets it automatically on normal macOS/aarch64
-builds when no assembly backend applies. Compiler targets without NEON,
-including -mgeneral-regs-only, retain the original scalar code.
+Current Portable e255d87 passes all 149 tests in macOS arm64 distcheck,
+CMake static and CMake shared builds, and in x86-64 CMake builds
+executed under Rosetta. Linux x86-64 and arm64 pass the upstream recipe,
+including arm64 Clang ASan CMake builds with assembly on/off. MSVC x64
+and Win32, static/shared, each pass 145 tests.
 
-The added regression compares bulk output and live state against single-
-byte calls, which stay scalar. It covers selected bulk boundaries, both
-keys, all sixteen byte alignments, counter carry/wrap, cached split
-writes, zero-length calls, in-place operation and continuation.
+OpenBSD 8.0 amd64 and arm64 VMs compile and run the actual translation
+unit and regression with Clang 22.1.6. The arm64 job checks NEON
+selection and -mgeneral-regs-only scalar fallback. This is not a full
+OpenBSD -current or base-system integration build.
 
-Testing on M1 Max/macOS: normal and explicit --disable-asm Portable
-builds each pass all 145 library tests. Original-scalar comparisons pass
-7,200 protected-page cases, 165,888 independent-alignment cases and
-49,488 broader differential cases. ASan/UBSan passes with fatal errors
-and an expected-failure control. Headers and exported symbol names
-match.
+Separate original-scalar comparisons pass 7,200 protected-page cases,
+165,888 independent-alignment cases and 49,488 broader differential
+cases, with fatal ASan/UBSan checks. Supplemental KNF formatting,
+warnings-as-errors and Clang analyzer checks pass.
 
-The corrected candidate passes 32 loopback peer transfers against stock
-Apple OpenSSH 10.3p1 and the unchanged-library 10.2p1 rebuild, with both
-directions, compression settings, default/legacy SCP and requested 1 MiB
-rekeying. All files pass SHA-256 verification.
+Measurements of revision 289dcecb on M1 Max reduced combined SSH
+endpoint CPU by 21.1% and elapsed time by 20.5% for uncompressed 512 MiB
+SFTP transfers; 32 KiB primitive CPU fell 54.5%. The subsequent source
+style and test cleanup in this diff produces identical optimized Mach-O
+text under that compiler, but has not been freshly benchmarked. No
+OpenBSD performance gain or general compression-enabled speedup is
+claimed.
 
-A separate five-pair 512 MiB uncompressed SFTP confirmation on M1 Max
-reduced combined endpoint CPU by 21.1% and elapsed time by 20.5%; the 32
-KiB primitive used 54.5% less CPU. The earlier Apple-only prototype also
-improved uncompressed SFTP on M3 Air, but that fanless/shared-host run
-is not a test of this cleaned revision. No general compression-enabled
-speedup or energy saving is claimed.
+The different OpenBSD unaligned-access code generation and larger stack
+frame remain review topics. OpenBSD -current/full-library integration
+and representative native-hardware performance need more validation.
 
-Native OpenBSD/aarch64 build, regressions and performance remain
-unverified. The translation unit cross-compiles for OpenBSD/aarch64, but
-that is not execution; its generated loads/stores and stack usage differ
-from macOS. Source/assembly review is not a constant-time proof.
+This was developed with Codex assistance and reviewed with an Astra
+model. That is assistance disclosure, not an OpenBSD maintainer review
+or independent human cryptographic audit.
 
-Base: libressl/openbsd 86ac60737a5b1465eb76b38f9edbe86d12f27497. Both
-modified base files matched openbsd/src master when checked on
-2026-11-15. Candidate: 289dcecb0ba0a7a740dc2435f80e8d557d10f0e9. Please
-recheck -current before applying.
+Base: libressl/openbsd 86ac60737a5b1465eb76b38f9edbe86d12f27497.
+Candidate: 5259b312e7d54bbcde9d13537f083dcd669c2cbb. The combined diff
+below is relative to src and contains only the implementation and
+regression. Please recheck -current before applying.
 
-The minimal diff below excludes benchmark machinery. Supporting evidence
-and the review record are available in the fork under
-benchmarks/macos/upstream-review on the experiment/libressl-4.4.1-neon
-branch.
+Supporting evidence and the contribution/CI audit are on the
+experiment/libressl-4.4.1-neon branch, under
+benchmarks/macos/upstream-review. No benchmark machinery or CI workflow
+is included in this source diff.
 
 https://github.com/rmilkowski/libressl-openbsd
-Branch: experiment/libressl-4.4.1-neon
-Directory: benchmarks/macos/upstream-review
 
 diff --git lib/libcrypto/chacha/chacha-merged.c lib/libcrypto/chacha/chacha-merged.c
-index debb776c..02a96cfb 100644
+index debb776c8..fe53b7ef6 100644
 --- lib/libcrypto/chacha/chacha-merged.c
 +++ lib/libcrypto/chacha/chacha-merged.c
 @@ -7,6 +7,13 @@ Public domain.
@@ -83,7 +79,7 @@ index debb776c..02a96cfb 100644
  #define CHACHA_MINKEYLEN	16
  #define CHACHA_NONCELEN		8
  #define CHACHA_CTRLEN		8
-@@ -115,6 +122,105 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
+@@ -115,6 +122,106 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
  	x->input[15] = U8TO32_LITTLE(iv + 4);
  }
  
@@ -95,13 +91,13 @@ index debb776c..02a96cfb 100644
 +#define CHACHA_NEON_ROTATE8(v) \
 +	vreinterpretq_u32_u8(vqtbl1q_u8(vreinterpretq_u8_u32(v), rotate8))
 +#define CHACHA_NEON_QUARTERROUND(a, b, c, d) do {			\
-+	(a) = vaddq_u32((a), (b));				\
++	(a) = vaddq_u32((a), (b));					\
 +	(d) = CHACHA_NEON_ROTATE16(veorq_u32((d), (a)));		\
-+	(c) = vaddq_u32((c), (d));				\
++	(c) = vaddq_u32((c), (d));					\
 +	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 12);		\
-+	(a) = vaddq_u32((a), (b));				\
-+	(d) = CHACHA_NEON_ROTATE8(veorq_u32((d), (a)));		\
-+	(c) = vaddq_u32((c), (d));				\
++	(a) = vaddq_u32((a), (b));					\
++	(d) = CHACHA_NEON_ROTATE8(veorq_u32((d), (a)));			\
++	(c) = vaddq_u32((c), (d));					\
 +	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 7);		\
 +} while (0)
 +
@@ -119,10 +115,11 @@ index debb776c..02a96cfb 100644
 +	const uint8x16_t rotate8 = {
 +		3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10, 15, 12, 13, 14
 +	};
-+	uint32x4_t x[16], base, a, b, c, d;
++	uint32x4_t x[16];
++	uint32x4_t a, b, base, c, d;
 +	uint8x16_t rows[4];
 +	uint64_t counter, n;
-+	uint32_t low[4], high[4];
++	uint32_t high[4], low[4];
 +	unsigned int i, k, r;
 +
 +	counter = ((uint64_t)ctx->input[13] << 32) | ctx->input[12];
@@ -189,7 +186,7 @@ index debb776c..02a96cfb 100644
  static inline void
  chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
  {
-@@ -129,6 +235,19 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
+@@ -129,6 +236,19 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
  	if (!bytes)
  		return;
  
@@ -210,7 +207,7 @@ index debb776c..02a96cfb 100644
  	j1 = x->input[1];
  	j2 = x->input[2];
 diff --git regress/lib/libcrypto/chacha/chachatest.c regress/lib/libcrypto/chacha/chachatest.c
-index 4e159746..07ec6b7e 100644
+index 4e1597461..c64849b45 100644
 --- regress/lib/libcrypto/chacha/chachatest.c
 +++ regress/lib/libcrypto/chacha/chachatest.c
 @@ -16,6 +16,7 @@
@@ -221,14 +218,15 @@ index 4e159746..07ec6b7e 100644
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
-@@ -292,6 +293,148 @@ struct chacha_test_function chacha_test_functions[] = {
+@@ -292,6 +293,150 @@ struct chacha_test_function chacha_test_functions[] = {
  
  #define N_FUNCS (sizeof(chacha_test_functions) / sizeof(*chacha_test_functions))
  
 +static int
 +chacha_ctx_equal(const ChaCha_ctx *a, const ChaCha_ctx *b)
 +{
-+	if (memcmp(a->input, b->input, sizeof(a->input)) != 0 ||
++	if (a->unused > sizeof(a->ks) || b->unused > sizeof(b->ks) ||
++	    memcmp(a->input, b->input, sizeof(a->input)) != 0 ||
 +	    a->unused != b->unused)
 +		return 0;
 +
@@ -241,13 +239,14 @@ index 4e159746..07ec6b7e 100644
 +chacha_bulk_case(unsigned int bits, uint64_t counter, size_t len,
 +    size_t alignment, int nonzero)
 +{
-+	ChaCha_ctx reference, continued, ctx, before;
-+	unsigned char key[32], iv[8], ctr[8];
-+	unsigned char in[1040], expected[1040], out[1040];
-+	unsigned char tail[129], expected_tail[129];
++	ChaCha_ctx before, continued, ctx, reference;
++	unsigned char ctr[8], iv[8], key[32];
++	unsigned char expected[1040], in[1040], out[1040];
++	unsigned char expected_tail[129], tail[129];
 +	const char *stage;
-+	size_t i, prefix = 0;
++	size_t i, prefix;
 +
++	prefix = 0;
 +	for (i = 0; i < sizeof(key); i++)
 +		key[i] = i * 7 + 1;
 +	for (i = 0; i < sizeof(iv); i++) {
@@ -370,7 +369,7 @@ index 4e159746..07ec6b7e 100644
  /* draft-arciszewski-xchacha-02 test vectors */
  static int
  crypto_hchacha_20_test(void)
-@@ -505,5 +648,8 @@ main(int argc, char **argv)
+@@ -505,5 +650,8 @@ main(int argc, char **argv)
  	if (crypto_xchacha_20_test() != 0)
  		failed = 1;
  

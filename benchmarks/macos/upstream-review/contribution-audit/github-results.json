@@ -1,0 +1,82 @@
+{
+  "source_commit": "5259b312e7d54bbcde9d13537f083dcd669c2cbb",
+  "ci_commit": "ae26ec9ceb331fa1fe7f9f209da65945e9916cdb",
+  "run_url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344",
+  "run_id": 43746096344,
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 132909610960,
+      "name": "OpenBSD 8.0 aarch64 ChaCha execution",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909610960"
+    },
+    {
+      "id": 132909611214,
+      "name": "Windows Win32 shared=ON",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611214"
+    },
+    {
+      "id": 132909611221,
+      "name": "Windows x64 shared=OFF",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611221"
+    },
+    {
+      "id": 132909611230,
+      "name": "Linux ubuntu-24.04-arm gcc",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611230"
+    },
+    {
+      "id": 132909611248,
+      "name": "Linux ubuntu-24.04-arm clang-asan-asm",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611248"
+    },
+    {
+      "id": 132909611252,
+      "name": "Linux ubuntu-24.04-arm clang-asan-noasm",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611252"
+    },
+    {
+      "id": 132909611275,
+      "name": "OpenBSD 8.0 x86_64 ChaCha execution",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611275"
+    },
+    {
+      "id": 132909611308,
+      "name": "Windows Win32 shared=OFF",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611308"
+    },
+    {
+      "id": 132909611347,
+      "name": "Linux ubuntu-24.04 gcc",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611347"
+    },
+    {
+      "id": 132909611355,
+      "name": "Windows x64 shared=ON",
+      "conclusion": "success",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43746096344/job/132909611355"
+    }
+  ],
+  "initial_run": {
+    "id": 43745592565,
+    "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/43745592565",
+    "conclusion": "failure",
+    "reason": "Windows source-identity comparison failed before compilation because checkout line-ending conversions differed; fixed by canonical LF checkout while retaining strict cmp. All six other jobs succeeded."
+  },
+  "notes": [
+    "Only the workflow differs between the CI commit and source candidate.",
+    "OpenBSD jobs compile and execute the translation unit/regression in OpenBSD 8.0 VMs, not full -current/libcrypto builds.",
+    "Windows has 145 tests per configuration; Linux/macOS configurations have 149.",
+    "ENABLE_ASM=OFF applies to CMake portions of the upstream script; Autotools portions retain defaults.",
+    "MSVC warnings occur in unchanged files; no warnings from the two changed ChaCha files."
+  ]
+}

@@ -13,10 +13,14 @@ M3 measurements must not be relabeled as results for a changed implementation.
 
 A [separate upstream-preparation candidate and validation](upstream-review/README.md)
 now records the cleaned implementation, Astra review and a fresh M1 Max
-confirmation. That final candidate saved 21.1% transfer CPU and 20.5% elapsed
-time in its own five-pair uncompressed SFTP run, with 54.5% primitive CPU saved
-at 32 KiB. It has not been run on the M3 or natively on OpenBSD. The table below
-continues to describe the original two-Mac experiment only.
+confirmation for revision `289dcecb`. That candidate saved 21.1% transfer CPU
+and 20.5% elapsed time in its own five-pair uncompressed SFTP run, with 54.5%
+primitive CPU saved
+at 32 KiB. It has not been benchmarked on the M3 or native OpenBSD hardware.
+The later [contribution audit](upstream-review/contribution-audit/README.md)
+records style/test cleanup in `5259b312` and expanded correctness/CI checks,
+including OpenBSD VM execution; those are not new performance measurements.
+The table below continues to describe the original two-Mac experiment only.
 
 ## Results
 

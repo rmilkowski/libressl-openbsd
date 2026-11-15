@@ -1,0 +1,187 @@
+name: ChaCha acceptance checks
+
+on:
+  push:
+    branches: [ci/chacha-aarch64-neon-acceptance]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chacha-acceptance-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux ${{ matrix.os }} ${{ matrix.mode }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            mode: gcc
+            cc: gcc
+            asm: 'ON'
+            cflags: ''
+            ldflags: ''
+          - os: ubuntu-24.04-arm
+            mode: gcc
+            cc: gcc
+            asm: 'ON'
+            cflags: ''
+            ldflags: ''
+          - os: ubuntu-24.04-arm
+            mode: clang-asan-asm
+            cc: clang
+            asm: 'ON'
+            cflags: -ggdb -fsanitize=address
+            ldflags: -fsanitize=address
+          - os: ubuntu-24.04-arm
+            mode: clang-asan-noasm
+            cc: clang
+            asm: 'OFF'
+            cflags: -ggdb -fsanitize=address
+            ldflags: -fsanitize=address
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: candidate
+          fetch-depth: 4
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: libressl/portable
+          ref: e255d870a0182f107d7e3ebca0744c24dd920e89
+          path: portable
+          persist-credentials: false
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake libtool cmake ninja-build libio-socket-ssl-perl
+          perl -MIO::Socket::SSL::Utils -e 1
+      - name: Pin exported source to the candidate
+        run: |
+          git -C candidate checkout -B master
+          git clone --no-hardlinks ./candidate portable/openbsd
+          git -C portable/openbsd rev-parse HEAD
+          sha256sum candidate/src/lib/libcrypto/chacha/chacha-merged.c candidate/src/regress/lib/libcrypto/chacha/chachatest.c
+      - name: Run upstream CI recipe
+        working-directory: portable
+        env:
+          ARCH: native
+          CC: ${{ matrix.cc }}
+          ENABLE_ASM: ${{ matrix.asm }}
+          CFLAGS: ${{ matrix.cflags }}
+          LDFLAGS: ${{ matrix.ldflags }}
+          CTEST_OUTPUT_ON_FAILURE: '1'
+        run: ./scripts/test
+      - name: Verify the tested source identity
+        run: |
+          test "$(git -C candidate rev-parse HEAD)" = "$(git -C portable/openbsd rev-parse HEAD)"
+          cmp candidate/src/lib/libcrypto/chacha/chacha-merged.c portable/crypto/chacha/chacha-merged.c
+          cmp candidate/src/regress/lib/libcrypto/chacha/chachatest.c portable/tests/chachatest.c
+      - name: Show failures
+        if: failure()
+        run: find portable -name test-suite.log -o -name LastTestsFailed.log | xargs -r cat
+
+  windows:
+    name: Windows ${{ matrix.arch }} shared=${{ matrix.shared }}
+    runs-on: windows-2022
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, Win32]
+        shared: ['ON', 'OFF']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: candidate
+          fetch-depth: 4
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: libressl/portable
+          ref: e255d870a0182f107d7e3ebca0744c24dd920e89
+          path: portable
+          persist-credentials: false
+      - uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e
+        id: msys2
+        with:
+          update: true
+          install: >-
+            diffutils gcc git patch perl perl-IO-Socket-SSL
+      - name: Prepare candidate export
+        shell: msys2 {0}
+        run: |
+          set -eu
+          git -C candidate checkout -B master
+          git -C candidate config core.autocrlf false
+          git -C candidate checkout-index --all --force
+          git clone --config core.autocrlf=false --no-hardlinks ./candidate portable/openbsd
+          cd portable
+          ./update.sh
+          test "$(git -C ../candidate rev-parse HEAD)" = "$(git -C openbsd rev-parse HEAD)"
+          cmp ../candidate/src/lib/libcrypto/chacha/chacha-merged.c crypto/chacha/chacha-merged.c
+          cmp ../candidate/src/regress/lib/libcrypto/chacha/chachatest.c tests/chachatest.c
+          sha256sum crypto/chacha/chacha-merged.c tests/chachatest.c
+      - name: Configure
+        shell: pwsh
+        env:
+          MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+          ARCH: ${{ matrix.arch }}
+          BUILD_SHARED_LIBS: ${{ matrix.shared }}
+        run: |
+          $perl = Join-Path "$env:MSYS2_LOCATION" 'usr\bin\perl.exe'
+          & $perl -MIO::Socket::SSL::Utils -e 1
+          if ($LASTEXITCODE -ne 0) { throw 'Missing IO::Socket::SSL::Utils' }
+          cmake -S portable -B build -G 'Visual Studio 17 2022' -A "$env:ARCH" -D BUILD_SHARED_LIBS="$env:BUILD_SHARED_LIBS" -D PERL_EXECUTABLE="$perl"
+      - name: Build
+        run: cmake --build build --config Release --parallel 4
+      - name: Test
+        run: ctest --test-dir build -C Release --parallel --output-on-failure --no-tests=error
+
+  openbsd:
+    name: OpenBSD 8.0 ${{ matrix.arch }} ChaCha execution
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64, aarch64]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Execute actual candidate and scalar fallback in OpenBSD
+        uses: vmactions/openbsd-vm@f1ca8bc8ecc5b6ef7218e5b914836e067e1546d3
+        with:
+          release: '8.0'
+          arch: ${{ matrix.arch }}
+          copyback: false
+          run: |
+            set -eu
+            uname -a
+            case '${{ matrix.arch }}: '"$(uname -m)" in
+              'aarch64: arm64'|'x86_64: amd64') ;;
+              *) echo 'Unexpected VM architecture' >&2; exit 1 ;;
+            esac
+            cc --version
+            mkdir -p public/openssl
+            cp src/lib/libcrypto/chacha/chacha.h public/openssl
+            cp src/lib/libcrypto/opensslconf.h src/lib/libcrypto/opensslfeatures.h public/openssl
+            cc -O2 -Wall -Wextra -Werror -Wno-unused-parameter '-DLCRYPTO_ALIAS(x)=' -Ipublic src/lib/libcrypto/chacha/chacha.c src/regress/lib/libcrypto/chacha/chachatest.c -o chachatest
+            time ./chachatest
+            cc -dM -E '-DLCRYPTO_ALIAS(x)=' -Ipublic src/lib/libcrypto/chacha/chacha.c > chacha.macros
+            if [ "$(uname -m)" = arm64 ]; then
+              grep '^#define CHACHA_USE_NEON' chacha.macros
+              cc -O2 -Wall -Wextra -Werror -Wno-unused-parameter -mgeneral-regs-only '-DLCRYPTO_ALIAS(x)=' -Ipublic src/lib/libcrypto/chacha/chacha.c src/regress/lib/libcrypto/chacha/chachatest.c -o chachatest-scalar
+              cc -mgeneral-regs-only -dM -E '-DLCRYPTO_ALIAS(x)=' -Ipublic src/lib/libcrypto/chacha/chacha.c > scalar.macros
+              if grep '^#define CHACHA_USE_NEON' scalar.macros; then exit 1; fi
+              time ./chachatest-scalar
+            else
+              if grep '^#define CHACHA_USE_NEON' chacha.macros; then exit 1; fi
+            fi

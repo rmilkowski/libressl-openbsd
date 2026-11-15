@@ -1,0 +1,8 @@
+{
+  "old_commit": "289dcecb0ba0a7a740dc2435f80e8d557d10f0e9",
+  "new_commit": "5259b312e7d54bbcde9d13537f083dcd669c2cbb",
+  "method": "Compare __TEXT,__text section bytes of separately compiled -O2 relocatable Mach-O objects; public headers and compiler identical. Linked dylib addresses differed because install-name paths have different lengths.",
+  "object_text_identical": true,
+  "old_text_sha256": "2710d4791ef6818d316d53a01c43fa1395f062a6fc609194076bad7b299ab1a0",
+  "new_text_sha256": "2710d4791ef6818d316d53a01c43fa1395f062a6fc609194076bad7b299ab1a0"
+}

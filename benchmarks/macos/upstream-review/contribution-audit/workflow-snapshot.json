@@ -1,0 +1,61 @@
+{
+  "portable_commit": "e255d870a0182f107d7e3ebca0744c24dd920e89",
+  "files": {
+    ".github/workflows/android.yml": {
+      "git_blob": "92812a7f7dada11af323ce316dce7415c6619103",
+      "sha256": "0a9a1b5ef5a8a7fa4a3f73b3f9b4c5c1ec35a5079a828891e0e1f8fcc2ed6951"
+    },
+    ".github/workflows/cifuzz.yml": {
+      "git_blob": "2ea966ac1eb21433b2acce2bdf1fda7b7e956a6d",
+      "sha256": "6b7a075f03cd373d3401491befdc729b4db0a964989f5dd28865cf6f0b22171e"
+    },
+    ".github/workflows/cmake-config.yml": {
+      "git_blob": "a45f5aa4597ec102bda71b36bb401eb91796184c",
+      "sha256": "e6d207073d7319d6aaeb916b0734bd3ca74511bd347857c83ed6571400fa1cf5"
+    },
+    ".github/workflows/coverity.yml": {
+      "git_blob": "9b8e668c358486d8549c5818e6c81a0568c4a3ef",
+      "sha256": "bedf307bfc55a26be894c70d5077ea041b29dddac1c23f61d9dda3e231d6ff48"
+    },
+    ".github/workflows/emscripten.yml": {
+      "git_blob": "bfeebdd6a9ca31b4676b51ad47690e7c75d7241c",
+      "sha256": "29a1fd2135ac1441eeabe1a71192f3c996d7ae16f17f2810feb178de39e2efa2"
+    },
+    ".github/workflows/fedora-rawhide.yml": {
+      "git_blob": "24a056bc0eb57034fd2fa46ee5dfcabefb4d9059",
+      "sha256": "43130d0443ae652b3e0d5bd6f90a7603c96bc9c6977ceadc8e36bf572098d233"
+    },
+    ".github/workflows/freebsd.yml": {
+      "git_blob": "3e6249ce15b9a2dd07ec5028ae5c1ac2ebe81608",
+      "sha256": "c3f747773af8bd738f8a0184398094eb141369dec4b886d326a5686e4f50d85d"
+    },
+    ".github/workflows/linux.yml": {
+      "git_blob": "673de245a7a501dff5eb187153d706fa77b7b79f",
+      "sha256": "f034d7a1e85ecefd6df0b4d78498edccf7a737bbb65af6f47c917c8d0849ba9d"
+    },
+    ".github/workflows/macos.yml": {
+      "git_blob": "1142110fd3ad77edea235e3ca922b3e5869bdf35",
+      "sha256": "95f9cb4b420fe4de8b66c852b160061d04d70bff1dceacae430cb8bae17c693d"
+    },
+    ".github/workflows/release.yml": {
+      "git_blob": "d9edf7a857e9f3dd907d92b8afd1f98664643d4b",
+      "sha256": "d3a5939b0f70c818defca8fb9629b418bbc1b846ab2d713646df44ec3b460e42"
+    },
+    ".github/workflows/rust-openssl.yml": {
+      "git_blob": "c29376169f730dfd0abbe63161ac33b928fa8352",
+      "sha256": "3f0a5c5150af79bd6ceed6f0a94f54dd9310463febb34f36a0b3a0bfac0928a6"
+    },
+    ".github/workflows/solaris.yml": {
+      "git_blob": "8c53c3298110abc512bb13544683dc6f73b848fc",
+      "sha256": "23e5e1f772fe36b1ccd3779bbf1727d7f7b7b894852af931cd25092e07b58732"
+    },
+    ".github/workflows/windows.yml": {
+      "git_blob": "b95e78fb0cff352103dafee6b028fd64f7e0976b",
+      "sha256": "ddf243bb40c4b329196b4b25435c9bc5d2a8d43dcadfb55e0eca9d6be78bf607"
+    },
+    "scripts/test": {
+      "git_blob": "10eb9283f9ccc11a3015dad161d5260a3ddd3f75",
+      "sha256": "831ca4dc8e12c2b070c07b10863bb6cb02a462bffc8d48410fdc1272e0efb7f7"
+    }
+  }
+}

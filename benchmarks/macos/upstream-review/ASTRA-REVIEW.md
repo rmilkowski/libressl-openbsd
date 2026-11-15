@@ -5,7 +5,8 @@ agent. This is an AI technical review, not an OpenBSD maintainer approval or an
 independent human cryptographic audit. No project `Reviewed-by` endorsement is
 asserted.
 
-Final candidate: `289dcecb0ba0a7a740dc2435f80e8d557d10f0e9`.
+Initial cleaned candidate: `289dcecb0ba0a7a740dc2435f80e8d557d10f0e9`.
+Current source candidate: `5259b312e7d54bbcde9d13537f083dcd669c2cbb`.
 Base: `86ac60737a5b1465eb76b38f9edbe86d12f27497`.
 
 ## Review iterations
@@ -44,8 +45,8 @@ Public API/context layout/export names are unchanged. Assembly inspection found
 fixed round/length loops and a fixed register-table rotation mask, not a formal
 proof of constant-time execution.
 
-The review explicitly leaves native OpenBSD execution/performance unverified and
-does not resolve maintainer acceptance of AI-assisted provenance. OpenBSD-target
+That initial review left native OpenBSD execution/performance unverified and
+did not resolve maintainer acceptance of AI-assisted provenance. OpenBSD-target
 cross code generation differs from macOS and needs native evaluation. Historical
 M1/M3 numbers must not be generalized to native OpenBSD or reassigned to a changed
 candidate. The separate final M1 confirmation and interoperability records are
@@ -57,3 +58,34 @@ reductions (21.0824% CPU and 20.5183% elapsed), the 32 KiB primitive reduction
 of the standalone and inline-mail diffs with the candidate. It found no
 actionable documentation/evidence inconsistency. Its optional request to explain
 the normal disconnect status 255 in passing records is addressed in the README.
+
+## Contribution and CI audit follow-up
+
+Astra separately examined the new source cleanup and actual recent conventions.
+It requested ordered declarations, wrapped submission prose, and a cache-length
+bounds check in the regression comparator. These were fixed in `5259b312`; the
+aggregate source diff passes `git diff --check` and supplemental `knfmt -Dds`.
+The published original commit was preserved and a wrapped combined submission
+message was prepared, rather than falsely claiming its history was rewritten.
+
+Astra reviewed the isolated CI workflow and requested strict exported-file and
+commit identity checks, nonempty CTest discovery, expected VM architecture, and
+verification of scalar selection with `-mgeneral-regs-only`. Those assertions
+were added. It also accepted the subsequent Windows LF-checkout correction,
+which preserves exact source comparisons rather than weakening them.
+
+The expanded checks and their exact results are documented in
+[contribution-audit](contribution-audit/README.md). OpenBSD 8.0 amd64 and arm64 VM
+execution closes the translation-unit execution gap for that release/ABI; it
+does not establish a full -current integration build or performance on native
+OpenBSD hardware. The existing 289dcecb performance measurements keep their
+original attribution.
+
+Final follow-up decision: Astra reported **no unresolved actionable issues** for
+`5259b312e7d54bbcde9d13537f083dcd669c2cbb`. It independently verified all
+89 audit-file hashes, all 31 standalone-validation hashes, committed source
+hashes, exact correspondence of the supplied standalone/inline diffs, and log
+support for all ten successful CI jobs. It found the contribution claims,
+assistance disclosure, historical performance attribution and remaining
+validation limits accurately distinguished. This review decision is recorded
+after verification; it remains an AI review, not upstream approval.

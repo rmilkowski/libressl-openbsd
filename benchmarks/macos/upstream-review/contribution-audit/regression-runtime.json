@@ -1,0 +1,77 @@
+{
+  "note": "Three full chachatest executions each; not a performance comparison. Build activity may affect timings.",
+  "runs": [
+    {
+      "variant": "scalar",
+      "repeat": 0,
+      "wall_seconds": 0.5051870830357075,
+      "returncode": 0
+    },
+    {
+      "variant": "scalar",
+      "repeat": 1,
+      "wall_seconds": 0.5115134157240391,
+      "returncode": 0
+    },
+    {
+      "variant": "scalar",
+      "repeat": 2,
+      "wall_seconds": 0.503206167370081,
+      "returncode": 0
+    },
+    {
+      "variant": "candidate",
+      "repeat": 0,
+      "wall_seconds": 0.4063464580103755,
+      "returncode": 0
+    },
+    {
+      "variant": "candidate",
+      "repeat": 1,
+      "wall_seconds": 0.40638737566769123,
+      "returncode": 0
+    },
+    {
+      "variant": "candidate",
+      "repeat": 2,
+      "wall_seconds": 0.40226495917886496,
+      "returncode": 0
+    },
+    {
+      "variant": "no-asm",
+      "repeat": 0,
+      "wall_seconds": 0.40616049990057945,
+      "returncode": 0
+    },
+    {
+      "variant": "no-asm",
+      "repeat": 1,
+      "wall_seconds": 0.4059799173846841,
+      "returncode": 0
+    },
+    {
+      "variant": "no-asm",
+      "repeat": 2,
+      "wall_seconds": 0.4067642083391547,
+      "returncode": 0
+    },
+    {
+      "variant": "no-neon",
+      "repeat": 0,
+      "wall_seconds": 0.5151424175128341,
+      "returncode": 0
+    },
+    {
+      "variant": "no-neon",
+      "repeat": 1,
+      "wall_seconds": 0.5080946246162057,
+      "returncode": 0
+    },
+    {
+      "variant": "no-neon",
+      "repeat": 2,
+      "wall_seconds": 0.5106086255982518,
+      "returncode": 0
+    }
+  ]
+}

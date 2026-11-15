@@ -1,17 +1,21 @@
 # Prepared ChaCha review candidate
 
 The minimal crypto/regression candidate is commit
-`289dcecb0ba0a7a740dc2435f80e8d557d10f0e9` on branch
+`5259b312e7d54bbcde9d13537f083dcd669c2cbb` on branch
 [`upstream/chacha-aarch64-neon`](https://github.com/rmilkowski/libressl-openbsd/tree/upstream/chacha-aarch64-neon).
 It is based on fetched LibreSSL/OpenBSD master
 `86ac60737a5b1465eb76b38f9edbe86d12f27497`. Both modified base files were also
 verified to match the corresponding `openbsd/src` master blobs on 2026-11-15;
 their identities are recorded in `evidence/upstream-snapshot.json`.
 
+The subsequent [contribution and CI audit](contribution-audit/README.md) records
+the current requirements, recent patch conventions, style fixes and expanded
+cross-platform tests for this revision. OpenBSD 8.0 VM execution now covers the
+actual ChaCha translation unit and regression on amd64/arm64; a full OpenBSD
+-current integration build and native-hardware performance remain unverified.
 This is a technically reviewed candidate, **not an assertion of upstream
-acceptance or production readiness**. Native OpenBSD/aarch64 execution remains
-unverified. AI-assisted provenance also requires an upstream decision, discussed
-below. No email or upstream pull request has been submitted.
+acceptance or production readiness**. No email or upstream pull request has been
+submitted.
 
 ## Submission shape and conventions
 
@@ -36,7 +40,7 @@ Recheck -current before sending. It was generated from the candidate worktree:
 cd /path/to/candidate/src
 git -c diff.noprefix=true -c diff.renames=false diff \
   86ac60737a5b1465eb76b38f9edbe86d12f27497 \
-  289dcecb0ba0a7a740dc2435f80e8d557d10f0e9 --relative .
+  5259b312e7d54bbcde9d13537f083dcd669c2cbb --relative .
 ```
 
 The new code follows the surrounding OpenBSD KNF conventions, with tabs, grouped
@@ -73,7 +77,12 @@ There are no public API, context layout, exported-symbol, round-count, protocol,
 key-format, compression or transfer-concurrency changes. No OpenSSL or Linux
 assembly has been imported into this diff.
 
-## Validation and reproducibility
+## Initial cleanup validation and reproducibility
+
+The preparation results in this section identify `289dcecb`. The later
+[audit](contribution-audit/README.md) reruns the standalone checks for exact
+revision `5259b312`, adds current Portable CI-recipe builds with 149 tests,
+and records cross-platform execution. Historical logs remain unchanged.
 
 The proposed public regression compares bulk output and resulting live state
 against single-byte calls, which cannot reach the bulk implementation. It covers
@@ -180,8 +189,8 @@ the earlier experiments.
 
 ## Review decision and remaining limits
 
-The user requested an independent Astra model review. Astra reviewed immutable
-candidate `289dcecb`, its minimal diff, regression tests, supplemental harness,
+The user requested an independent Astra model review. Astra initially reviewed
+immutable candidate `289dcecb`, its minimal diff, regression tests, supplemental harness,
 validation hashes and generated macOS/OpenBSD-target assembly. After the UBSan
 fix and rerun it reported **no unresolved blocking technical findings within that
 scope**. This is an AI review, not an OpenBSD maintainer approval, human security
@@ -190,18 +199,23 @@ audit, formal proof or `Reviewed-by` endorsement from the project.
 Generated macOS SIMD code has fixed round-count/length loops, a fixed register
 shuffle mask and no calls in the bulk region. Some original state values are
 spilled for feed-forward. The OpenBSD-target cross assembly lowers unaligned byte
-loads/stores less efficiently and uses a larger stack frame. It needs native
-compiler, regression and performance validation; no OpenBSD speedup is claimed.
+loads/stores less efficiently and uses a larger stack frame. It still needs
+OpenBSD -current/full-library integration and representative native-hardware
+performance validation; no OpenBSD speedup is claimed.
 Source and assembly inspection do not prove constant-time execution.
 
+The new audit also covers declaration ordering, defensive regression-state
+checks, commit-message wrapping and actual CI recipes. Astra reviewed those
+changes and the supplemental workflow. Its final record is in
+[ASTRA-REVIEW.md](ASTRA-REVIEW.md).
+
 OpenBSD's public copyright guidance prefers ISC for new code and requires rights
-to any contributed material. Its developers have also rejected AI-generated
-submissions over provenance concerns. That is a material acceptance issue for
-this AI-assisted implementation, not something passing tests or restyling can
-settle. The unsent mailing-list draft discloses the assistance and asks for a
-maintainer decision rather than claiming the patch satisfies provenance policy.
-Independent human review and any requested reimplementation must remain honest
-about the origin of this work.
+to contributed material. A broader OpenBSD discussion rejected another AI-code
+submission over provenance concerns; no LibreSSL-specific blanket AI ban was
+found in the inspected repository guidance. The unsent mailing-list draft
+discloses Codex assistance and Astra model review. Tests and formatting do not
+decide maintainer acceptance, and any human review or reimplementation must
+remain honest about the origin of the work.
 
 References: [OpenBSD diff preparation](https://www.openbsd.org/faq/faq5.html#Diff),
 [style(9)](https://man.openbsd.org/style.9),

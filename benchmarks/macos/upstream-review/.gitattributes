@@ -4,3 +4,6 @@ tech-mail.txt -whitespace
 # Preserve exact generated evidence and superseded-source hashes.
 evidence/** -whitespace
 superseded-0284904e/** -whitespace
+# Preserve compiler output and exact upstream workflow/source snapshots.
+contribution-audit/standalone-5259b312e/** -whitespace
+contribution-audit/workflow-snapshot/** -whitespace

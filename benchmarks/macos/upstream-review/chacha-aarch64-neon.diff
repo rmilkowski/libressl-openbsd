@@ -1,5 +1,5 @@
 diff --git lib/libcrypto/chacha/chacha-merged.c lib/libcrypto/chacha/chacha-merged.c
-index debb776c..02a96cfb 100644
+index debb776c8..fe53b7ef6 100644
 --- lib/libcrypto/chacha/chacha-merged.c
 +++ lib/libcrypto/chacha/chacha-merged.c
 @@ -7,6 +7,13 @@ Public domain.
@@ -16,7 +16,7 @@ index debb776c..02a96cfb 100644
  #define CHACHA_MINKEYLEN	16
  #define CHACHA_NONCELEN		8
  #define CHACHA_CTRLEN		8
-@@ -115,6 +122,105 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
+@@ -115,6 +122,106 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
  	x->input[15] = U8TO32_LITTLE(iv + 4);
  }
  
@@ -28,13 +28,13 @@ index debb776c..02a96cfb 100644
 +#define CHACHA_NEON_ROTATE8(v) \
 +	vreinterpretq_u32_u8(vqtbl1q_u8(vreinterpretq_u8_u32(v), rotate8))
 +#define CHACHA_NEON_QUARTERROUND(a, b, c, d) do {			\
-+	(a) = vaddq_u32((a), (b));				\
++	(a) = vaddq_u32((a), (b));					\
 +	(d) = CHACHA_NEON_ROTATE16(veorq_u32((d), (a)));		\
-+	(c) = vaddq_u32((c), (d));				\
++	(c) = vaddq_u32((c), (d));					\
 +	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 12);		\
-+	(a) = vaddq_u32((a), (b));				\
-+	(d) = CHACHA_NEON_ROTATE8(veorq_u32((d), (a)));		\
-+	(c) = vaddq_u32((c), (d));				\
++	(a) = vaddq_u32((a), (b));					\
++	(d) = CHACHA_NEON_ROTATE8(veorq_u32((d), (a)));			\
++	(c) = vaddq_u32((c), (d));					\
 +	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 7);		\
 +} while (0)
 +
@@ -52,10 +52,11 @@ index debb776c..02a96cfb 100644
 +	const uint8x16_t rotate8 = {
 +		3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10, 15, 12, 13, 14
 +	};
-+	uint32x4_t x[16], base, a, b, c, d;
++	uint32x4_t x[16];
++	uint32x4_t a, b, base, c, d;
 +	uint8x16_t rows[4];
 +	uint64_t counter, n;
-+	uint32_t low[4], high[4];
++	uint32_t high[4], low[4];
 +	unsigned int i, k, r;
 +
 +	counter = ((uint64_t)ctx->input[13] << 32) | ctx->input[12];
@@ -122,7 +123,7 @@ index debb776c..02a96cfb 100644
  static inline void
  chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
  {
-@@ -129,6 +235,19 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
+@@ -129,6 +236,19 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
  	if (!bytes)
  		return;
  
@@ -143,7 +144,7 @@ index debb776c..02a96cfb 100644
  	j1 = x->input[1];
  	j2 = x->input[2];
 diff --git regress/lib/libcrypto/chacha/chachatest.c regress/lib/libcrypto/chacha/chachatest.c
-index 4e159746..07ec6b7e 100644
+index 4e1597461..c64849b45 100644
 --- regress/lib/libcrypto/chacha/chachatest.c
 +++ regress/lib/libcrypto/chacha/chachatest.c
 @@ -16,6 +16,7 @@
@@ -154,14 +155,15 @@ index 4e159746..07ec6b7e 100644
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
-@@ -292,6 +293,148 @@ struct chacha_test_function chacha_test_functions[] = {
+@@ -292,6 +293,150 @@ struct chacha_test_function chacha_test_functions[] = {
  
  #define N_FUNCS (sizeof(chacha_test_functions) / sizeof(*chacha_test_functions))
  
 +static int
 +chacha_ctx_equal(const ChaCha_ctx *a, const ChaCha_ctx *b)
 +{
-+	if (memcmp(a->input, b->input, sizeof(a->input)) != 0 ||
++	if (a->unused > sizeof(a->ks) || b->unused > sizeof(b->ks) ||
++	    memcmp(a->input, b->input, sizeof(a->input)) != 0 ||
 +	    a->unused != b->unused)
 +		return 0;
 +
@@ -174,13 +176,14 @@ index 4e159746..07ec6b7e 100644
 +chacha_bulk_case(unsigned int bits, uint64_t counter, size_t len,
 +    size_t alignment, int nonzero)
 +{
-+	ChaCha_ctx reference, continued, ctx, before;
-+	unsigned char key[32], iv[8], ctr[8];
-+	unsigned char in[1040], expected[1040], out[1040];
-+	unsigned char tail[129], expected_tail[129];
++	ChaCha_ctx before, continued, ctx, reference;
++	unsigned char ctr[8], iv[8], key[32];
++	unsigned char expected[1040], in[1040], out[1040];
++	unsigned char expected_tail[129], tail[129];
 +	const char *stage;
-+	size_t i, prefix = 0;
++	size_t i, prefix;
 +
++	prefix = 0;
 +	for (i = 0; i < sizeof(key); i++)
 +		key[i] = i * 7 + 1;
 +	for (i = 0; i < sizeof(iv); i++) {
@@ -303,7 +306,7 @@ index 4e159746..07ec6b7e 100644
  /* draft-arciszewski-xchacha-02 test vectors */
  static int
  crypto_hchacha_20_test(void)
-@@ -505,5 +648,8 @@ main(int argc, char **argv)
+@@ -505,5 +650,8 @@ main(int argc, char **argv)
  	if (crypto_xchacha_20_test() != 0)
  		failed = 1;
  
