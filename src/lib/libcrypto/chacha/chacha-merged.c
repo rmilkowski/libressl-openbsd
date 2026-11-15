@@ -115,6 +115,72 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
 	x->input[15] = U8TO32_LITTLE(iv + 4);
 }
 
+/* Experimental LibreSSL Apple arm64 ChaCha20, preserving the original 64-bit counter.
+ * SIMD stays within one thread; short calls retain the upstream scalar
+ * implementation, and the bulk path processes four existing cipher blocks.
+ * No lookup indexed by secret data and no reduced-round variant. */
+#if defined(__APPLE__) && defined(__aarch64__)
+#include <arm_neon.h>
+#include <stdint.h>
+#include <string.h>
+
+#define NROT(x,n) vsriq_n_u32(vshlq_n_u32((x),(n)),(x),32-(n))
+#define NROT16(x) vreinterpretq_u32_u16(vrev32q_u16(vreinterpretq_u16_u32(x)))
+#define NROT8(x) vreinterpretq_u32_u8(vqtbl1q_u8(vreinterpretq_u8_u32(x), \
+    (uint8x16_t){3,0,1,2,7,4,5,6,11,8,9,10,15,12,13,14}))
+#define NQR(a,b,c,d) do { \
+    a=vaddq_u32(a,b); d=NROT16(veorq_u32(d,a)); \
+    c=vaddq_u32(c,d); b=NROT(veorq_u32(b,c),12); \
+    a=vaddq_u32(a,b); d=NROT8(veorq_u32(d,a)); \
+    c=vaddq_u32(c,d); b=NROT(veorq_u32(b,c),7); \
+} while(0)
+
+static void
+chacha_neon_four(struct chacha_ctx *ctx, const unsigned char *in,
+    unsigned char *out)
+{
+    uint32x4_t x[16];
+    uint64_t counter=((uint64_t)ctx->input[13]<<32)|ctx->input[12];
+    uint32_t lo[4],hi[4];
+    for(unsigned k=0;k<4;k++) {
+        uint64_t n=counter+k;
+        lo[k]=(uint32_t)n; hi[k]=(uint32_t)(n>>32);
+    }
+    for(unsigned i=0;i<16;i++) x[i]=vdupq_n_u32(ctx->input[i]);
+    x[12]=vld1q_u32(lo); x[13]=vld1q_u32(hi);
+    for(unsigned r=0;r<10;r++) {
+        NQR(x[0],x[4],x[8],x[12]); NQR(x[1],x[5],x[9],x[13]);
+        NQR(x[2],x[6],x[10],x[14]); NQR(x[3],x[7],x[11],x[15]);
+        NQR(x[0],x[5],x[10],x[15]); NQR(x[1],x[6],x[11],x[12]);
+        NQR(x[2],x[7],x[8],x[13]); NQR(x[3],x[4],x[9],x[14]);
+    }
+    for(unsigned i=0;i<16;i++) {
+        uint32x4_t base=i==12?vld1q_u32(lo):i==13?vld1q_u32(hi):vdupq_n_u32(ctx->input[i]);
+        x[i]=vaddq_u32(x[i],base);
+    }
+    for(unsigned i=0;i<16;i+=4) {
+        uint32x4_t a=vtrn1q_u32(x[i],x[i+1]);
+        uint32x4_t b=vtrn2q_u32(x[i],x[i+1]);
+        uint32x4_t c=vtrn1q_u32(x[i+2],x[i+3]);
+        uint32x4_t d=vtrn2q_u32(x[i+2],x[i+3]);
+        uint8x16_t rows[4]={
+            vreinterpretq_u8_u32(vcombine_u32(vget_low_u32(a),vget_low_u32(c))),
+            vreinterpretq_u8_u32(vcombine_u32(vget_low_u32(b),vget_low_u32(d))),
+            vreinterpretq_u8_u32(vcombine_u32(vget_high_u32(a),vget_high_u32(c))),
+            vreinterpretq_u8_u32(vcombine_u32(vget_high_u32(b),vget_high_u32(d)))};
+        for(unsigned k=0;k<4;k++)
+            vst1q_u8(out+k*64+i*4,veorq_u8(vld1q_u8(in+k*64+i*4),rows[k]));
+    }
+    counter+=4;
+    ctx->input[12]=(uint32_t)counter;ctx->input[13]=(uint32_t)(counter>>32);
+}
+
+#undef NROT
+#undef NROT8
+#undef NROT16
+#undef NQR
+#endif
+
 static inline void
 chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
 {
@@ -128,6 +194,20 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
 
 	if (!bytes)
 		return;
+
+#if defined(__APPLE__) && defined(__aarch64__)
+	while (bytes >= 256) {
+		chacha_neon_four(x, m, c);
+		m += 256;
+		c += 256;
+		bytes -= 256;
+	}
+	if (bytes == 0) {
+		x->unused = 0;
+		return;
+	}
+#endif
+
 
 	j0 = x->input[0];
 	j1 = x->input[1];
