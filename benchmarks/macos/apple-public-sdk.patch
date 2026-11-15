@@ -1,0 +1,11 @@
+diff --git a/openssh/ssh.c b/openssh/ssh.c
+index 82bfdef..a19c04e 100644
+--- a/openssh/ssh.c
++++ b/openssh/ssh.c
+@@ -73 +73,2 @@
+-#ifdef __APPLE__
++#if defined(__APPLE__) && __has_include(<si_compare.h>)
++#define APPLE_SI_COMPARE_AVAILABLE 1
+@@ -734 +735 @@ main(int ac, char **av)
+-#if __APPLE__
++#ifdef APPLE_SI_COMPARE_AVAILABLE
