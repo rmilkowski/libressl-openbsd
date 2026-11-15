@@ -9,11 +9,11 @@ eventual upstream patch can contain only the cipher change.
 Open a **local Terminal on the Air**, not an SSH shell to the original Mac:
 
 ```sh
-mkdir -p "$HOME/Developer"
+mkdir -p "$HOME/Documents/ChatGPT"
 git clone --branch experiment/libressl-4.4.1-neon --single-branch \
   https://github.com/rmilkowski/libressl-openbsd.git \
-  "$HOME/Developer/libressl-openbsd"
-cd "$HOME/Developer/libressl-openbsd"
+  "$HOME/Documents/ChatGPT/libressl-openbsd"
+cd "$HOME/Documents/ChatGPT/libressl-openbsd"
 ```
 
 In Codex on the Air, add that local folder as a new project, for example
@@ -30,7 +30,9 @@ Paste this into a new chat in the local project:
 > data and validation logs, and summarize CPU seconds, elapsed time, variability,
 > and the comparison with the earlier M1 Max results. Do not change the crypto
 > patch to make the measurements look better. Save the generated report files in
-> benchmarks/macos/reports/, ready to review and commit.
+> benchmarks/macos/reports/, ready to review and commit. If the sandbox blocks
+> sysctl, source downloads or loopback sockets, follow the sandboxed-agent
+> instructions below and request an approved retry of the benchmark command.
 
 Or run directly from the Air's local Terminal:
 
@@ -49,6 +51,45 @@ Plug into AC power, keep the lid open and use normal power mode. Close other
 CPU-heavy work and avoid builds during timing. The script records power and
 thermal status without changing settings. Prevent sleep for the session if
 needed. It can take several minutes plus compilation and validation time.
+
+## Running from a sandboxed Codex agent
+
+macOS can deny the initial `/usr/sbin/sysctl` chip query inside Codex's sandbox
+with `Operation not permitted`. Source downloads and local loopback sockets can
+also require permission beyond the sandbox. These are execution-permission
+failures, not evidence that the chip or crypto implementation is wrong.
+
+If this happens, the agent should request an approved retry of the **whole
+benchmark command** through Codex's normal command-approval mechanism:
+
+```sh
+python3 benchmarks/macos/run.py --expect-chip 'Apple M3' --label m3-air
+```
+
+Run from the local clone on the Air, normally
+`$HOME/Documents/ChatGPT/libressl-openbsd`. For an agent using the `exec_command`
+tool, set `sandbox_permissions: "require_escalated"` on that retry and provide a
+justification such as: "Run the authorized native M3 benchmark, including chip
+verification, pinned public source downloads, local builds/tests and loopback
+SCP transfers, outside the sandbox." Let the configured user or automatic
+approval reviewer decide the request. This is a per-command exception; it does
+not require `sudo`, changing SIP, or globally enabling Full Access.
+
+Keep `--expect-chip 'Apple M3'` and the real `sysctl` check. Do not hardcode a
+chip name, skip chip verification, or relax crypto/validation checks to get past
+the permission error. After approval, the command must identify `Apple M3`
+before proceeding. An actual M1 Max chip result still means stop and select the
+Air's local execution environment.
+
+If the failure occurred at the initial chip query, preparation, builds,
+validation and measurements have not started. Rerun the same command without
+`--skip-build` or `--skip-library-tests`; no lock cleanup is needed at that stage.
+Keep the approved benchmark running through completion and collect its report.
+
+If escalation is unavailable or rejected, report that concrete blocker and the
+approval decision. The user can run the same command in the Air's ordinary local
+Terminal. A failed preflight produces no benchmark result; do not report it as a
+completed measurement. See [Codex sandbox and approval documentation](https://learn.chatgpt.com/docs/sandboxing#configure-defaults).
 
 ## Controlled comparison
 
