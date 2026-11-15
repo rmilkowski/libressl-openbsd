@@ -296,7 +296,8 @@ struct chacha_test_function chacha_test_functions[] = {
 static int
 chacha_ctx_equal(const ChaCha_ctx *a, const ChaCha_ctx *b)
 {
-	if (memcmp(a->input, b->input, sizeof(a->input)) != 0 ||
+	if (a->unused > sizeof(a->ks) || b->unused > sizeof(b->ks) ||
+	    memcmp(a->input, b->input, sizeof(a->input)) != 0 ||
 	    a->unused != b->unused)
 		return 0;
 
@@ -309,13 +310,14 @@ static int
 chacha_bulk_case(unsigned int bits, uint64_t counter, size_t len,
     size_t alignment, int nonzero)
 {
-	ChaCha_ctx reference, continued, ctx, before;
-	unsigned char key[32], iv[8], ctr[8];
-	unsigned char in[1040], expected[1040], out[1040];
-	unsigned char tail[129], expected_tail[129];
+	ChaCha_ctx before, continued, ctx, reference;
+	unsigned char ctr[8], iv[8], key[32];
+	unsigned char expected[1040], in[1040], out[1040];
+	unsigned char expected_tail[129], tail[129];
 	const char *stage;
-	size_t i, prefix = 0;
+	size_t i, prefix;
 
+	prefix = 0;
 	for (i = 0; i < sizeof(key); i++)
 		key[i] = i * 7 + 1;
 	for (i = 0; i < sizeof(iv); i++) {

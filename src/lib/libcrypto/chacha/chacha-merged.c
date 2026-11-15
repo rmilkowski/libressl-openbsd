@@ -130,13 +130,13 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
 #define CHACHA_NEON_ROTATE8(v) \
 	vreinterpretq_u32_u8(vqtbl1q_u8(vreinterpretq_u8_u32(v), rotate8))
 #define CHACHA_NEON_QUARTERROUND(a, b, c, d) do {			\
-	(a) = vaddq_u32((a), (b));				\
+	(a) = vaddq_u32((a), (b));					\
 	(d) = CHACHA_NEON_ROTATE16(veorq_u32((d), (a)));		\
-	(c) = vaddq_u32((c), (d));				\
+	(c) = vaddq_u32((c), (d));					\
 	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 12);		\
-	(a) = vaddq_u32((a), (b));				\
-	(d) = CHACHA_NEON_ROTATE8(veorq_u32((d), (a)));		\
-	(c) = vaddq_u32((c), (d));				\
+	(a) = vaddq_u32((a), (b));					\
+	(d) = CHACHA_NEON_ROTATE8(veorq_u32((d), (a)));			\
+	(c) = vaddq_u32((c), (d));					\
 	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 7);		\
 } while (0)
 
@@ -154,10 +154,11 @@ chacha_encrypt_four(chacha_ctx *ctx, const u8 *in, u8 *out)
 	const uint8x16_t rotate8 = {
 		3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10, 15, 12, 13, 14
 	};
-	uint32x4_t x[16], base, a, b, c, d;
+	uint32x4_t x[16];
+	uint32x4_t a, b, base, c, d;
 	uint8x16_t rows[4];
 	uint64_t counter, n;
-	uint32_t low[4], high[4];
+	uint32_t high[4], low[4];
 	unsigned int i, k, r;
 
 	counter = ((uint64_t)ctx->input[13] << 32) | ctx->input[12];
