@@ -7,6 +7,13 @@ Public domain.
 
 #include <stdint.h>
 
+#if defined(__aarch64__) && defined(__ARM_NEON) && \
+    defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && \
+    __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#include <arm_neon.h>
+#define CHACHA_USE_NEON
+#endif
+
 #define CHACHA_MINKEYLEN	16
 #define CHACHA_NONCELEN		8
 #define CHACHA_CTRLEN		8
@@ -115,6 +122,105 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
 	x->input[15] = U8TO32_LITTLE(iv + 4);
 }
 
+#ifdef CHACHA_USE_NEON
+#define CHACHA_NEON_ROTATE(v, n) \
+	vsriq_n_u32(vshlq_n_u32((v), (n)), (v), 32 - (n))
+#define CHACHA_NEON_ROTATE16(v) \
+	vreinterpretq_u32_u16(vrev32q_u16(vreinterpretq_u16_u32(v)))
+#define CHACHA_NEON_ROTATE8(v) \
+	vreinterpretq_u32_u8(vqtbl1q_u8(vreinterpretq_u8_u32(v), rotate8))
+#define CHACHA_NEON_QUARTERROUND(a, b, c, d) do {			\
+	(a) = vaddq_u32((a), (b));				\
+	(d) = CHACHA_NEON_ROTATE16(veorq_u32((d), (a)));		\
+	(c) = vaddq_u32((c), (d));				\
+	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 12);		\
+	(a) = vaddq_u32((a), (b));				\
+	(d) = CHACHA_NEON_ROTATE8(veorq_u32((d), (a)));		\
+	(c) = vaddq_u32((c), (d));				\
+	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 7);		\
+} while (0)
+
+static void chacha_encrypt_four(chacha_ctx *, const u8 *, u8 *);
+
+/*
+ * Process four complete blocks. Each vector holds one state word from each
+ * block; words 12 and 13 carry the low and high halves of the 64-bit counter.
+ * Counter additions wrap modulo 2^64, as in the scalar implementation.
+ * The byte permutations and output stores require a little-endian target.
+ */
+static void
+chacha_encrypt_four(chacha_ctx *ctx, const u8 *in, u8 *out)
+{
+	const uint8x16_t rotate8 = {
+		3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10, 15, 12, 13, 14
+	};
+	uint32x4_t x[16], base, a, b, c, d;
+	uint8x16_t rows[4];
+	uint64_t counter, n;
+	uint32_t low[4], high[4];
+	unsigned int i, k, r;
+
+	counter = ((uint64_t)ctx->input[13] << 32) | ctx->input[12];
+	for (k = 0; k < 4; k++) {
+		n = counter + k;
+		low[k] = (uint32_t)n;
+		high[k] = (uint32_t)(n >> 32);
+	}
+	for (i = 0; i < 16; i++)
+		x[i] = vdupq_n_u32(ctx->input[i]);
+	x[12] = vld1q_u32(low);
+	x[13] = vld1q_u32(high);
+
+	for (r = 0; r < 10; r++) {
+		CHACHA_NEON_QUARTERROUND(x[0], x[4], x[8], x[12]);
+		CHACHA_NEON_QUARTERROUND(x[1], x[5], x[9], x[13]);
+		CHACHA_NEON_QUARTERROUND(x[2], x[6], x[10], x[14]);
+		CHACHA_NEON_QUARTERROUND(x[3], x[7], x[11], x[15]);
+		CHACHA_NEON_QUARTERROUND(x[0], x[5], x[10], x[15]);
+		CHACHA_NEON_QUARTERROUND(x[1], x[6], x[11], x[12]);
+		CHACHA_NEON_QUARTERROUND(x[2], x[7], x[8], x[13]);
+		CHACHA_NEON_QUARTERROUND(x[3], x[4], x[9], x[14]);
+	}
+	for (i = 0; i < 16; i++) {
+		if (i == 12)
+			base = vld1q_u32(low);
+		else if (i == 13)
+			base = vld1q_u32(high);
+		else
+			base = vdupq_n_u32(ctx->input[i]);
+		x[i] = vaddq_u32(x[i], base);
+	}
+
+	/* Transpose four words at a time back into consecutive blocks. */
+	for (i = 0; i < 16; i += 4) {
+		a = vtrn1q_u32(x[i], x[i + 1]);
+		b = vtrn2q_u32(x[i], x[i + 1]);
+		c = vtrn1q_u32(x[i + 2], x[i + 3]);
+		d = vtrn2q_u32(x[i + 2], x[i + 3]);
+		rows[0] = vreinterpretq_u8_u32(vcombine_u32(vget_low_u32(a),
+		    vget_low_u32(c)));
+		rows[1] = vreinterpretq_u8_u32(vcombine_u32(vget_low_u32(b),
+		    vget_low_u32(d)));
+		rows[2] = vreinterpretq_u8_u32(vcombine_u32(vget_high_u32(a),
+		    vget_high_u32(c)));
+		rows[3] = vreinterpretq_u8_u32(vcombine_u32(vget_high_u32(b),
+		    vget_high_u32(d)));
+		for (k = 0; k < 4; k++) {
+			vst1q_u8(out + k * 64 + i * 4,
+			    veorq_u8(vld1q_u8(in + k * 64 + i * 4), rows[k]));
+		}
+	}
+	counter += 4;
+	ctx->input[12] = (uint32_t)counter;
+	ctx->input[13] = (uint32_t)(counter >> 32);
+}
+
+#undef CHACHA_NEON_ROTATE
+#undef CHACHA_NEON_ROTATE16
+#undef CHACHA_NEON_ROTATE8
+#undef CHACHA_NEON_QUARTERROUND
+#endif
+
 static inline void
 chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
 {
@@ -128,6 +234,19 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
 
 	if (!bytes)
 		return;
+
+#ifdef CHACHA_USE_NEON
+	while (bytes >= 4 * CHACHA_BLOCKLEN) {
+		chacha_encrypt_four(x, m, c);
+		m += 4 * CHACHA_BLOCKLEN;
+		c += 4 * CHACHA_BLOCKLEN;
+		bytes -= 4 * CHACHA_BLOCKLEN;
+	}
+	if (bytes == 0) {
+		x->unused = 0;
+		return;
+	}
+#endif
 
 	j0 = x->input[0];
 	j1 = x->input[1];
