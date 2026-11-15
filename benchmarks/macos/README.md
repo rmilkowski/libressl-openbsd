@@ -4,6 +4,9 @@ This directory makes the experiment reproducible from a normal Git clone. The
 crypto implementation is a separate commit from these benchmark tools, so an
 eventual upstream patch can contain only the cipher change.
 
+The [M1 Max and M3 Air comparison](RESULTS.md) records both machines' results,
+including the fanless M3's possible throttling and background-activity caveats.
+
 ## Start on the MacBook Air M3
 
 Open a **local Terminal on the Air**, not an SSH shell to the original Mac:

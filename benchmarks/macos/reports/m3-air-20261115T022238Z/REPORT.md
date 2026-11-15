@@ -166,6 +166,16 @@ environment files; the runner's original archive predates those additions.
 
 ### Power and background activity
 
+The user confirmed this is a fanless MacBook Air and that it was not completely
+idle. Fanless cooling can constrain sustained performance; possible throttling
+must remain a caveat rather than being asserted as the cause of any difference
+from the M1 Max. No continuous temperature, clock-frequency or core-residency
+trace was collected, so a fixed thermal state cannot be established. Background
+process CPU is excluded from the transfer CPU total, but frequency changes and
+resource contention can still influence both CPU seconds and elapsed time.
+Paired order does not eliminate these effects, and gains are not known lower
+bounds. See the [combined comparison](../../RESULTS.md).
+
 The completed run began on AC power with low-power mode disabled. AC was also
 confirmed before transfer timing and after completion. macOS reported no thermal
 or performance warnings at the recorded checks; this does not prove constant
