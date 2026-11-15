@@ -1,0 +1,330 @@
+Making check in include
+Making check in openssl
+make[2]: Nothing to be done for `check'.
+make[2]: Nothing to be done for `check-am'.
+Making check in crypto
+/Applications/Xcode-beta.app/Contents/Developer/usr/bin/make  check-am
+make[2]: Nothing to be done for `check-am'.
+Making check in ssl
+ar dv /Users/milek/Documents/ChatGPT/libressl-openbsd/benchmarks/macos/work/builds/libressl-neon/ssl/.libs/libssl.a \
+	    bs_ber.o bs_cbb.o bs_cbs.o
+ar: bs_ber.o: not found in archive
+ar: bs_cbb.o: not found in archive
+ar: bs_cbs.o: not found in archive
+make[1]: [remove_bs_objects] Error 1 (ignored)
+Making check in tls
+make[1]: Nothing to be done for `check'.
+Making check in apps
+Making check in ocspcheck
+make[2]: Nothing to be done for `check'.
+Making check in openssl
+make[2]: Nothing to be done for `check'.
+Making check in nc
+make[2]: Nothing to be done for `check'.
+make[2]: Nothing to be done for `check-am'.
+Making check in man
+make[1]: Nothing to be done for `check'.
+Making check in tests
+/Applications/Xcode-beta.app/Contents/Developer/usr/bin/make  aeadtest aes_test aes_wrap apitest arc4randomforktest asn1_string_to_utf8 asn1api asn1basic asn1complex asn1evp asn1object asn1oct asn1string_copy asn1test asn1time asn1x509 base64test bf_test bio_asn1 bio_chain bio_dump  bio_mem bn_add_sub bn_bits bn_cmp bn_convert bn_ffdh bn_gcd bn_isqrt bn_mod_exp bn_mod_inverse bn_mod_sqrt bn_mont bn_primes bn_print bn_shift bn_test bn_to_string bn_unit bn_word buffertest bytestringtest callback callbackfailures expirecallback casttest chachatest cipher_list cipherstest clienttest cmstest configtest constraints crypto_test cttest destest dhtest dsatest dtls_handshake_msg_test dtls_wire_test ecc_cdh ec_asn1_test ec_point_conversion ecdhtest ecdsatest ectest ed25519test err_test evp_ecx_test evp_pkey_cleanup evptest evp_test exdata_test explicit_bzero exportertest freenull gcm128test handshake_table hkdftest hmactest ideatest igetest key_schedule keypairtest lhash_test md_test mlkem_tests mlkem_iteration_tests mlkem_unittest name_constraints_test objectstest  optionstest pbkdf2  pkcs7test poly1305test policy pq_test quictest randtest rc2_test rc4_test recordtest record_layer_test renegotiation_test rfc3779 rfc5280time rmd_test rsa_method_test rsa_padding_test rsa_test servertest sha_test shutdowntest signertest sm3test sm4test ssl_get_shared_ciphers ssl_kex ssl_methods ssl_set_alpn_protos ssl_verify_param ssl_verify ssl_versions ssl_tlstest ssltest timingsafe tlsexttest tlslegacytest tlstest tls_ext_alpn tls_prf utf8test valid_handshakes_terminate x509_verify verifytest x25519test x509attribute x509_algor x509_asn1 x509_crl x509_extensions_test x509_info x509_name_test x509req_ext
+make[2]: `aeadtest' is up to date.
+make[2]: `aes_test' is up to date.
+make[2]: `aes_wrap' is up to date.
+make[2]: `apitest' is up to date.
+make[2]: `arc4randomforktest' is up to date.
+make[2]: `asn1_string_to_utf8' is up to date.
+make[2]: `asn1api' is up to date.
+make[2]: `asn1basic' is up to date.
+make[2]: `asn1complex' is up to date.
+make[2]: `asn1evp' is up to date.
+make[2]: `asn1object' is up to date.
+make[2]: `asn1oct' is up to date.
+make[2]: `asn1string_copy' is up to date.
+make[2]: `asn1test' is up to date.
+make[2]: `asn1time' is up to date.
+make[2]: `asn1x509' is up to date.
+make[2]: `base64test' is up to date.
+make[2]: `bf_test' is up to date.
+make[2]: `bio_asn1' is up to date.
+make[2]: `bio_chain' is up to date.
+make[2]: `bio_dump' is up to date.
+make[2]: `bio_mem' is up to date.
+make[2]: `bn_add_sub' is up to date.
+make[2]: `bn_bits' is up to date.
+make[2]: `bn_cmp' is up to date.
+make[2]: `bn_convert' is up to date.
+make[2]: `bn_ffdh' is up to date.
+make[2]: `bn_gcd' is up to date.
+make[2]: `bn_isqrt' is up to date.
+make[2]: `bn_mod_exp' is up to date.
+make[2]: `bn_mod_inverse' is up to date.
+make[2]: `bn_mod_sqrt' is up to date.
+make[2]: `bn_mont' is up to date.
+make[2]: `bn_primes' is up to date.
+make[2]: `bn_print' is up to date.
+make[2]: `bn_shift' is up to date.
+make[2]: `bn_test' is up to date.
+make[2]: `bn_to_string' is up to date.
+make[2]: `bn_unit' is up to date.
+make[2]: `bn_word' is up to date.
+make[2]: `buffertest' is up to date.
+make[2]: `bytestringtest' is up to date.
+make[2]: `callback' is up to date.
+make[2]: `callbackfailures' is up to date.
+make[2]: `expirecallback' is up to date.
+make[2]: `casttest' is up to date.
+make[2]: `chachatest' is up to date.
+make[2]: `cipher_list' is up to date.
+make[2]: `cipherstest' is up to date.
+make[2]: `clienttest' is up to date.
+make[2]: `cmstest' is up to date.
+make[2]: `configtest' is up to date.
+make[2]: `constraints' is up to date.
+make[2]: `crypto_test' is up to date.
+make[2]: `cttest' is up to date.
+make[2]: `destest' is up to date.
+make[2]: `dhtest' is up to date.
+make[2]: `dsatest' is up to date.
+make[2]: `dtls_handshake_msg_test' is up to date.
+make[2]: `dtls_wire_test' is up to date.
+make[2]: `ecc_cdh' is up to date.
+make[2]: `ec_asn1_test' is up to date.
+make[2]: `ec_point_conversion' is up to date.
+make[2]: `ecdhtest' is up to date.
+make[2]: `ecdsatest' is up to date.
+make[2]: `ectest' is up to date.
+make[2]: `ed25519test' is up to date.
+make[2]: `err_test' is up to date.
+make[2]: `evp_ecx_test' is up to date.
+make[2]: `evp_pkey_cleanup' is up to date.
+make[2]: `evptest' is up to date.
+make[2]: `evp_test' is up to date.
+make[2]: `exdata_test' is up to date.
+make[2]: `explicit_bzero' is up to date.
+make[2]: `exportertest' is up to date.
+make[2]: `freenull' is up to date.
+make[2]: `gcm128test' is up to date.
+make[2]: `handshake_table' is up to date.
+make[2]: `hkdftest' is up to date.
+make[2]: `hmactest' is up to date.
+make[2]: `ideatest' is up to date.
+make[2]: `igetest' is up to date.
+make[2]: `key_schedule' is up to date.
+make[2]: `keypairtest' is up to date.
+make[2]: `lhash_test' is up to date.
+make[2]: `md_test' is up to date.
+make[2]: `mlkem_tests' is up to date.
+make[2]: `mlkem_iteration_tests' is up to date.
+make[2]: `mlkem_unittest' is up to date.
+make[2]: `name_constraints_test' is up to date.
+make[2]: `objectstest' is up to date.
+make[2]: `optionstest' is up to date.
+make[2]: `pbkdf2' is up to date.
+make[2]: `pkcs7test' is up to date.
+make[2]: `poly1305test' is up to date.
+make[2]: `policy' is up to date.
+make[2]: `pq_test' is up to date.
+make[2]: `quictest' is up to date.
+make[2]: `randtest' is up to date.
+make[2]: `rc2_test' is up to date.
+make[2]: `rc4_test' is up to date.
+make[2]: `recordtest' is up to date.
+make[2]: `record_layer_test' is up to date.
+make[2]: `renegotiation_test' is up to date.
+make[2]: `rfc3779' is up to date.
+make[2]: `rfc5280time' is up to date.
+make[2]: `rmd_test' is up to date.
+make[2]: `rsa_method_test' is up to date.
+make[2]: `rsa_padding_test' is up to date.
+make[2]: `rsa_test' is up to date.
+make[2]: `servertest' is up to date.
+make[2]: `sha_test' is up to date.
+make[2]: `shutdowntest' is up to date.
+make[2]: `signertest' is up to date.
+make[2]: `sm3test' is up to date.
+make[2]: `sm4test' is up to date.
+make[2]: `ssl_get_shared_ciphers' is up to date.
+make[2]: `ssl_kex' is up to date.
+make[2]: `ssl_methods' is up to date.
+make[2]: `ssl_set_alpn_protos' is up to date.
+make[2]: `ssl_verify_param' is up to date.
+make[2]: `ssl_verify' is up to date.
+make[2]: `ssl_versions' is up to date.
+make[2]: `ssl_tlstest' is up to date.
+make[2]: `ssltest' is up to date.
+make[2]: `timingsafe' is up to date.
+make[2]: `tlsexttest' is up to date.
+make[2]: `tlslegacytest' is up to date.
+make[2]: `tlstest' is up to date.
+make[2]: `tls_ext_alpn' is up to date.
+make[2]: `tls_prf' is up to date.
+make[2]: `utf8test' is up to date.
+make[2]: `valid_handshakes_terminate' is up to date.
+make[2]: `x509_verify' is up to date.
+make[2]: `verifytest' is up to date.
+make[2]: `x25519test' is up to date.
+make[2]: `x509attribute' is up to date.
+make[2]: `x509_algor' is up to date.
+make[2]: `x509_asn1' is up to date.
+make[2]: `x509_crl' is up to date.
+make[2]: `x509_extensions_test' is up to date.
+make[2]: `x509_info' is up to date.
+make[2]: `x509_name_test' is up to date.
+make[2]: `x509req_ext' is up to date.
+/Applications/Xcode-beta.app/Contents/Developer/usr/bin/make  check-TESTS
+PASS: aes_test
+PASS: aes_wrap
+PASS: aeadtest.sh
+PASS: asn1_string_to_utf8
+PASS: apitest
+PASS: arc4randomforktest.sh
+PASS: asn1api
+PASS: asn1complex
+PASS: asn1basic
+PASS: asn1evp
+PASS: asn1object
+PASS: asn1string_copy
+PASS: asn1oct
+PASS: asn1test
+PASS: asn1time
+PASS: base64test
+PASS: bf_test
+PASS: asn1x509
+PASS: bio_asn1
+PASS: bio_chain
+PASS: bio_dump
+PASS: bn_add_sub
+PASS: bn_bits
+PASS: bn_cmp
+PASS: bn_convert
+PASS: bn_ffdh
+PASS: bio_mem
+PASS: bn_mod_inverse
+PASS: bn_mod_sqrt
+PASS: bn_mont
+PASS: bn_isqrt
+PASS: bn_print
+PASS: bn_gcd
+PASS: bn_shift
+PASS: bn_to_string
+PASS: bn_test
+PASS: bn_word
+PASS: buffertest
+PASS: bytestringtest
+PASS: x509_callbacks.sh
+PASS: casttest
+PASS: chachatest
+PASS: cipher_list
+PASS: cipherstest
+PASS: clienttest
+PASS: cmstest
+PASS: configtest
+PASS: constraints
+PASS: crypto_test
+PASS: bn_mod_exp
+PASS: destest
+PASS: cttest
+PASS: dhtest
+PASS: dtls_handshake_msg_test
+PASS: dsatest
+PASS: dtls_wire_test
+PASS: ec_asn1_test
+PASS: bn_unit
+PASS: ecdhtest
+PASS: ec_point_conversion
+PASS: ecc_cdh
+PASS: ed25519test
+PASS: ectest
+PASS: err_test
+PASS: evp_ecx_test
+PASS: evp_pkey_cleanup
+PASS: evptest.sh
+PASS: evp_test
+PASS: explicit_bzero
+PASS: exdata_test
+PASS: ecdsatest
+PASS: exportertest
+PASS: freenull
+PASS: gcm128test
+PASS: handshake_table
+PASS: hkdftest
+PASS: hmactest
+PASS: ideatest
+PASS: igetest
+PASS: key_schedule
+PASS: keypairtest.sh
+PASS: mlkem_tests.sh
+PASS: md_test
+PASS: mlkem_unittest
+PASS: name_constraints_test
+PASS: objectstest
+PASS: optionstest
+PASS: pbkdf2
+PASS: pkcs7test
+PASS: poly1305test
+PASS: policy
+PASS: pq_test
+PASS: quictest.sh
+PASS: randtest
+PASS: rc2_test
+PASS: rc4_test
+PASS: recordtest
+PASS: record_layer_test
+PASS: renegotiation_test.sh
+PASS: rfc3779
+PASS: rfc5280time
+PASS: rmd_test
+PASS: rsa_method_test
+PASS: rsa_padding_test
+PASS: bn_primes
+PASS: servertest.sh
+PASS: sha_test
+PASS: rsa_test
+PASS: signertest
+PASS: sm3test
+PASS: shutdowntest.sh
+PASS: ssl_get_shared_ciphers
+PASS: ssl_kex
+PASS: ssl_methods
+PASS: ssl_set_alpn_protos
+PASS: ssl_verify_param
+PASS: sm4test
+PASS: ssl_versions
+PASS: ssl_tlstest.sh
+PASS: mlkem_iteration_tests
+PASS: ssl_verify.sh
+PASS: testdsa.sh
+PASS: testrsa.sh
+PASS: timingsafe
+PASS: tlsexttest
+PASS: tlslegacytest
+PASS: tlstest.sh
+PASS: tls_ext_alpn
+PASS: tls_prf
+PASS: ssltest.sh
+PASS: valid_handshakes_terminate
+PASS: utf8test
+PASS: x509_verify.sh
+PASS: verifytest
+PASS: lhash_test
+PASS: x509attribute
+PASS: x509_algor
+PASS: x509_crl
+PASS: x25519test
+PASS: x509_extensions_test
+PASS: x509_info
+PASS: x509_name_test
+PASS: x509req_ext
+PASS: testenc.sh
+PASS: x509_asn1
+============================================================================
+Testsuite summary for libressl 4.4.1
+============================================================================
+# TOTAL: 145
+# PASS:  145
+# SKIP:  0
+# XFAIL: 0
+# FAIL:  0
+# XPASS: 0
+# ERROR: 0
+============================================================================
+make[1]: Nothing to be done for `check-am'.

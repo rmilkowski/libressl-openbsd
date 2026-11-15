@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "transfer_records": 72,
+  "transfer_warmups": 12,
+  "transfer_measured": 60,
+  "measured_per_variant_per_condition": 5,
+  "transfer_bytes": 536870912,
+  "primitive_records": 72,
+  "primitive_warmups": 12,
+  "primitive_measured": 60,
+  "library_tests": {
+    "baseline": {
+      "passed": 145,
+      "skipped": 0,
+      "failed": 0
+    },
+    "patched": {
+      "passed": 145,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "differential_cases": 49488,
+  "sanitized_differential_cases": 49488,
+  "checks": [
+    "Exact deterministic condition and variant ordering",
+    "Complete five-pair matrix; no warmups included in summaries",
+    "Every recorded transfer SHA-256 matches independently rehashed corpus",
+    "Every summary median, minimum, maximum, CPU seconds/GiB and savings recomputed from raw measured records",
+    "Primitive sizes, iterations, rounds and warmup flags",
+    "SSH binary and baseline/patched source hashes match recorded metadata",
+    "All nine exported files match runner output before report annotation",
+    "No private key headers in exported report files"
+  ],
+  "corpus_sha256": {
+    "random": "98bc41c047f0ae0bfad823b95e88256647275d0019a14208f2b9fd9106f0aaa1",
+    "text": "3bb4e9749a506708f719bc79c8d1a1cff619c5d017fa3382fe5c781ba7465bc0"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "m3-air",
+  "started_utc": "20261115T022238Z",
+  "arguments": {
+    "label": "m3-air",
+    "pairs": 5,
+    "mib": 512,
+    "cooldown": 60,
+    "pause": 2,
+    "jobs": 4,
+    "skip_build": true,
+    "skip_library_tests": false
+  },
+  "chip": "Apple M3",
+  "model": "Mac15,12",
+  "memory_bytes": "25769803776",
+  "logical_cpus": "8",
+  "architecture": "arm64",
+  "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2\nBuildVersion:\t\t26B5112a",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.20.102)\nTarget: arm64-apple-darwin27.2.0\nThread model: posix\nInstalledDir: /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "sdk": "27.0",
+  "power": "Battery Power:\n Sleep On Power Button 1\n lowpowermode         0\n standby              1\n ttyskeepawake        1\n hibernatemode        3\n powernap             1\n hibernatefile        /var/vm/sleepimage\n displaysleep         3\n womp                 0\n networkoversleep     0\n sleep                1\n lessbright           1\n tcpkeepalive         1\n disksleep            10\nAC Power:\n Sleep On Power Button 1\n lowpowermode         0\n standby              1\n ttyskeepawake        1\n hibernatemode        3\n powernap             1\n hibernatefile        /var/vm/sleepimage\n displaysleep         10\n womp                 1\n networkoversleep     0\n sleep                0\n tcpkeepalive         1\n disksleep            10",
+  "battery": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=25755747)\t100%; finishing charge; 0:00 remaining present: true",
+  "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "baseline_chacha_sha256": "e728668de5d144b2150f2224bb1482fd3047c973e16289cfe6681c3202ea185e",
+  "patched_chacha_sha256": "6940f3b605310df380d67cf4dcd50982b1d4228c3a07e7f3d61f40400aa62efa",
+  "patch_sha256": "4b386c5ac9e8f7f1d45bc7128ab0ada94ae6b790cbaeaf8523e3219c5e035e8c",
+  "apple-libressl": {
+    "version": "OpenSSH_10.2p1, LibreSSL 4.4.1",
+    "linkage": "/Users/milek/Documents/ChatGPT/libressl-openbsd/benchmarks/macos/work/builds/apple-libressl/ssh:\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/Kerberos.framework/Versions/A/Kerberos (compatibility version 5.0.0, current version 6.0.0)\n\t/Users/milek/Documents/ChatGPT/libressl-openbsd/benchmarks/macos/work/builds/libressl-current/install/lib/libcrypto.57.dylib (compatibility version 58.0.0, current version 58.2.0)\n\t/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)",
+    "sha256": "3a1ec07e841646008abfc56c582542c865f0891245916499bcfe69ba91867f4c"
+  },
+  "apple-libressl-neon": {
+    "version": "OpenSSH_10.2p1, LibreSSL 4.4.1",
+    "linkage": "/Users/milek/Documents/ChatGPT/libressl-openbsd/benchmarks/macos/work/builds/apple-libressl-neon/ssh:\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/Kerberos.framework/Versions/A/Kerberos (compatibility version 5.0.0, current version 6.0.0)\n\t/Users/milek/Documents/ChatGPT/libressl-openbsd/benchmarks/macos/work/builds/libressl-neon/install/lib/libcrypto.57.dylib (compatibility version 58.0.0, current version 58.2.0)\n\t/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)",
+    "sha256": "daab4566218cc38b492c08696778dcbe5761151aea28a7cc9a061716a968ed55"
+  },
+  "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "finished_utc": "2026-11-15T02:33:23.365200+00:00"
+}

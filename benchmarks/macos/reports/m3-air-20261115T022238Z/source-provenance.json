@@ -1,0 +1,16 @@
+{
+  "libressl_release": "4.4.1",
+  "libressl_url": "https://cdn.openbsd.org/pub/OpenBSD/LibreSSL/libressl-4.4.1.tar.gz",
+  "libressl_archive_sha256": "290cdf1b53c086255dc302f118b98602a444e9ae6d11e9bfdd8c9b1b60aa3a22",
+  "original_portable_git_commit": "c4a8f5f86d15b08eb2f5dfb2aa44e90a0c1f6a3d",
+  "original_openbsd_base": "0fc62a7ccde3eed5e6825b9e54bd2a703b995a9d",
+  "apple_source": "2cc66abd7f8f1eb27d6a3074e476514194efe07e",
+  "apple_url": "https://codeload.github.com/apple-oss-distributions/OpenSSH/tar.gz/2cc66abd7f8f1eb27d6a3074e476514194efe07e",
+  "apple_archive_sha256": "2cbfcd422269aa5630bed2da618f6416b53fce326ad575fdd37ba75c095f3490",
+  "experiment_head": "43c666dfe29ef191ef9e8006525c982d83ac7650",
+  "experiment_status": "?? benchmarks/macos/reports/",
+  "baseline_chacha_sha256": "e728668de5d144b2150f2224bb1482fd3047c973e16289cfe6681c3202ea185e",
+  "patched_chacha_sha256": "6940f3b605310df380d67cf4dcd50982b1d4228c3a07e7f3d61f40400aa62efa",
+  "ssh_cflags": "-Os -g plus configure hardening",
+  "libressl_cflags": "-O2 -g plus configure hardening"
+}
