@@ -16,6 +16,7 @@
  */
 
 #include <err.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -292,6 +293,148 @@ struct chacha_test_function chacha_test_functions[] = {
 
 #define N_FUNCS (sizeof(chacha_test_functions) / sizeof(*chacha_test_functions))
 
+static int
+chacha_ctx_equal(const ChaCha_ctx *a, const ChaCha_ctx *b)
+{
+	if (memcmp(a->input, b->input, sizeof(a->input)) != 0 ||
+	    a->unused != b->unused)
+		return 0;
+
+	/* Bytes outside the live keystream cache need not be preserved. */
+	return memcmp(a->ks + sizeof(a->ks) - a->unused,
+	    b->ks + sizeof(b->ks) - b->unused, a->unused) == 0;
+}
+
+static int
+chacha_bulk_case(unsigned int bits, uint64_t counter, size_t len,
+    size_t alignment, int nonzero)
+{
+	ChaCha_ctx reference, continued, ctx, before;
+	unsigned char key[32], iv[8], ctr[8];
+	unsigned char in[1040], expected[1040], out[1040];
+	unsigned char tail[129], expected_tail[129];
+	const char *stage;
+	size_t i, prefix = 0;
+
+	for (i = 0; i < sizeof(key); i++)
+		key[i] = i * 7 + 1;
+	for (i = 0; i < sizeof(iv); i++) {
+		iv[i] = i * 13 + 2;
+		ctr[i] = counter >> (8 * i);
+	}
+	for (i = 0; i < sizeof(in); i++)
+		in[i] = nonzero ? i * 17 + i / 193 : 0;
+	memcpy(expected, in, sizeof(expected));
+
+	/* Single-byte calls cannot reach a multi-block implementation. */
+	ChaCha_set_key(&reference, key, bits);
+	ChaCha_set_iv(&reference, iv, ctr);
+	for (i = 0; i < len; i++) {
+		ChaCha(&reference, expected + alignment + i,
+		    in + alignment + i, 1);
+	}
+	continued = reference;
+	for (i = 0; i < sizeof(expected_tail); i++)
+		ChaCha(&continued, expected_tail + i, in + i, 1);
+
+	memcpy(out, in, sizeof(out));
+	ChaCha_set_key(&ctx, key, bits);
+	ChaCha_set_iv(&ctx, iv, ctr);
+	ChaCha(&ctx, out + alignment, in + alignment, len);
+	stage = "separate output/state";
+	if (memcmp(out, expected, sizeof(out)) != 0 ||
+	    !chacha_ctx_equal(&ctx, &reference))
+		goto failed;
+	ChaCha(&ctx, tail, in, sizeof(tail));
+	stage = "separate continuation";
+	if (memcmp(tail, expected_tail, sizeof(tail)) != 0 ||
+	    !chacha_ctx_equal(&ctx, &continued))
+		goto failed;
+
+	/* Exercise every possible live-cache length before the bulk call. */
+	for (prefix = 0; prefix < 64 && prefix <= len; prefix++) {
+		memcpy(out, in, sizeof(out));
+		ChaCha_set_key(&ctx, key, bits);
+		ChaCha_set_iv(&ctx, iv, ctr);
+		ChaCha(&ctx, out + alignment, out + alignment, prefix);
+		before = ctx;
+		ChaCha(&ctx, out + alignment, out + alignment, 0);
+		stage = "zero-length cached call";
+		if (!chacha_ctx_equal(&ctx, &before))
+			goto failed;
+		ChaCha(&ctx, out + alignment + prefix,
+		    out + alignment + prefix, len - prefix);
+		stage = "in-place split output/state";
+		if (memcmp(out, expected, sizeof(out)) != 0 ||
+		    !chacha_ctx_equal(&ctx, &reference))
+			goto failed;
+		ChaCha(&ctx, tail, in, sizeof(tail));
+		stage = "in-place split continuation";
+		if (memcmp(tail, expected_tail, sizeof(tail)) != 0 ||
+		    !chacha_ctx_equal(&ctx, &continued))
+			goto failed;
+	}
+
+	if (bits == 256) {
+		memcpy(out, in, sizeof(out));
+		CRYPTO_chacha_20(out + alignment, in + alignment, len,
+		    key, iv, counter);
+		stage = "one-shot output";
+		if (memcmp(out, expected, sizeof(out)) != 0)
+			goto failed;
+	}
+	return 0;
+
+ failed:
+	fprintf(stderr, "ChaCha %s: bits=%u counter=%016llx len=%zu "
+	    "alignment=%zu nonzero=%d prefix=%zu\n", stage, bits,
+	    (unsigned long long)counter, len, alignment, nonzero, prefix);
+	return 1;
+}
+
+static int
+chacha_bulk_alignments(unsigned int bits, uint64_t counter, size_t len)
+{
+	size_t alignment;
+	int nonzero;
+
+	for (alignment = 0; alignment < 16; alignment++) {
+		for (nonzero = 0; nonzero <= 1; nonzero++) {
+			if (chacha_bulk_case(bits, counter, len, alignment,
+			    nonzero))
+				return 1;
+		}
+	}
+	return 0;
+}
+
+static int
+chacha_bulk_test(void)
+{
+	static const size_t lengths[] = {
+		0, 1, 63, 64, 65, 255, 256, 257, 319, 320,
+		511, 512, 513, 767, 768, 769, 1023, 1024
+	};
+	static const uint64_t counters[] = {
+		0, 1, UINT64_C(0xfffffffd), UINT64_C(0xffffffff),
+		UINT64_MAX - 2, UINT64_MAX
+	};
+	size_t i, j;
+	unsigned int bits;
+
+	for (bits = 128; bits <= 256; bits += 128) {
+		for (i = 0; i < sizeof(counters) / sizeof(counters[0]); i++) {
+			for (j = 0; j < sizeof(lengths) / sizeof(lengths[0]);
+			    j++) {
+				if (chacha_bulk_alignments(bits, counters[i],
+				    lengths[j]))
+					return 1;
+			}
+		}
+	}
+	return 0;
+}
+
 /* draft-arciszewski-xchacha-02 test vectors */
 static int
 crypto_hchacha_20_test(void)
@@ -503,6 +646,9 @@ main(int argc, char **argv)
 		failed = 1;
 
 	if (crypto_xchacha_20_test() != 0)
+		failed = 1;
+
+	if (chacha_bulk_test() != 0)
 		failed = 1;
 
 	return failed;
