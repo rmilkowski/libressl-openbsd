@@ -1,0 +1,44 @@
+{
+  "base": "86ac60737a5b1465eb76b38f9edbe86d12f27497",
+  "candidate": "289dcecb0ba0a7a740dc2435f80e8d557d10f0e9",
+  "portable_release": "4.4.1",
+  "apple_source": "2cc66abd7f8f1eb27d6a3074e476514194efe07e",
+  "libressl_cflags": "-O2 -g plus configure-selected flags",
+  "ssh_cflags": "-Os -g plus configure-selected flags",
+  "notes": "Separate cleanup validation; not pooled with historical M1/M3 measurements.",
+  "candidate_source_sha256": "feb384719e6da4b44ed7608bc835b3e2ab7708fceb905e1fffee8b82182c92c4",
+  "portable_normal_neon_active": true,
+  "portable_disable_asm_neon_active": true,
+  "chip": "Apple M1 Max",
+  "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0\nBuildVersion:\t\t26A428",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.25.1)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "power": "AC Power:\n Sleep On Power Button 1\n autorestartatconnect 0\n standby              0\n ttyskeepawake        1\n powernap             1\n displaysleep         30\n womp                 1\n networkoversleep     0\n sleep                0\n tcpkeepalive         1\n autorestart          0\n disksleep            10",
+  "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "utc": "20261115T031805Z",
+  "pairs": 5,
+  "mib": 512,
+  "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "post_run_fingerprints_utc": "2026-11-15T03:23:13.734233+00:00",
+  "binaries": {
+    "apple-libressl": {
+      "version": "OpenSSH_10.2p1, LibreSSL 4.4.1",
+      "ssh_sha256": "3f89809daea4a85d741517b1a14ef33fd9b38da9240aa1a90dd6805e4722008f",
+      "scp_sha256": "699f701b13fad42da4018de2af23e6157d3df810aa31c691b686534a48007659",
+      "sshd_sha256": "86c5c630b98da992646e2e7153a49473055cc23133ebe61d5cface9759072223",
+      "linkage": "/private/tmp/libressl-upstream-review/builds/apple-libressl/ssh:\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/Kerberos.framework/Versions/A/Kerberos (compatibility version 5.0.0, current version 6.0.0)\n\t/private/tmp/libressl-upstream-review/builds/libressl-current/install/lib/libcrypto.57.dylib (compatibility version 58.0.0, current version 58.2.0)\n\t/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+    },
+    "apple-libressl-neon": {
+      "version": "OpenSSH_10.2p1, LibreSSL 4.4.1",
+      "ssh_sha256": "43e2c34fe83f8e3823cd37995039a0ccaaed3824138ef54e790820499ec8e7a6",
+      "scp_sha256": "f08a44ecdc8077b57d76d8618c145617bd210a4a39717aeb42a0dad4bbae8193",
+      "sshd_sha256": "e3b8ec7d9a9444e59b90974a16668a7d4c2594f34bc152613919b1ae2305ea37",
+      "linkage": "/private/tmp/libressl-upstream-review/builds/apple-libressl-neon/ssh:\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/Kerberos.framework/Versions/A/Kerberos (compatibility version 5.0.0, current version 6.0.0)\n\t/private/tmp/libressl-upstream-review/builds/libressl-neon/install/lib/libcrypto.57.dylib (compatibility version 58.0.0, current version 58.2.0)\n\t/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+    }
+  },
+  "stock_peer_version": "OpenSSH_10.3p1, LibreSSL 3.3.6",
+  "library_sha256": {
+    "current": "ce7c1432f9bc5d8ab73bd2f36c378a88d66d307c485aae271996b78a7be020f5",
+    "neon": "f5905917b8936f79b6e97e0485da3cf49b4c25caa872771688d79b55b2229d8f",
+    "neon-noasm": "5b4e8f4aa1c7f889513ac69286492a316aad8c1605809c4a38a1e3a30ae4f9f8"
+  }
+}

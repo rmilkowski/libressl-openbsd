@@ -1,0 +1,19 @@
+{
+  "candidate": "289dcecb0ba0a7a740dc2435f80e8d557d10f0e9",
+  "normal_portable_cpp": {
+    "OPENSSL_NO_ASM": true,
+    "CHACHA_USE_NEON": true
+  },
+  "full_object_tbl_instruction_counts": {
+    "scalar": 0,
+    "normal_candidate": 8,
+    "disable_asm_candidate": 8
+  },
+  "normal_library_tests": 145,
+  "disable_asm_library_tests": 145,
+  "guard_page_cases_per_library": 7200,
+  "independent_alignment_cases_per_library": 165888,
+  "installed_headers_identical": 69,
+  "exported_symbol_names_identical": 3263,
+  "patch_applies_and_reproduces_candidate": true
+}

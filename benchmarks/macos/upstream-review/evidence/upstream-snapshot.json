@@ -1,0 +1,11 @@
+{
+  "checked_date": "2026-11-15",
+  "libressl_openbsd_base": "86ac60737a5b1465eb76b38f9edbe86d12f27497",
+  "candidate_commit": "289dcecb0ba0a7a740dc2435f80e8d557d10f0e9",
+  "openbsd_src_master_modified_file_blobs": {
+    "lib/libcrypto/chacha/chacha-merged.c": "debb776c8fedc5495759b2d540c00482ec55e227",
+    "regress/lib/libcrypto/chacha/chachatest.c": "4e159746173cf2f8e42722a64a11967ebe2629d5"
+  },
+  "note": "Both base files matched openbsd/src master when checked; native OpenBSD build/run remains pending.",
+  "candidate_source_sha256": "feb384719e6da4b44ed7608bc835b3e2ab7708fceb905e1fffee8b82182c92c4"
+}

@@ -11,6 +11,13 @@ ChaCha source SHA-256 is
 Subsequent upstream preparation must be validated separately; these historical
 M3 measurements must not be relabeled as results for a changed implementation.
 
+A [separate upstream-preparation candidate and validation](upstream-review/README.md)
+now records the cleaned implementation, Astra review and a fresh M1 Max
+confirmation. That final candidate saved 21.1% transfer CPU and 20.5% elapsed
+time in its own five-pair uncompressed SFTP run, with 54.5% primitive CPU saved
+at 32 KiB. It has not been run on the M3 or natively on OpenBSD. The table below
+continues to describe the original two-Mac experiment only.
+
 ## Results
 
 | Machine | Protocol | Data | Compression | CPU saved | Elapsed time saved |

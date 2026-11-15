@@ -1,0 +1,18 @@
+{
+  "base": "86ac60737a5b1465eb76b38f9edbe86d12f27497",
+  "candidate": "0284904e165d84d553a3ebefacca54738ff490fc",
+  "portable_release": "4.4.1",
+  "apple_source": "2cc66abd7f8f1eb27d6a3074e476514194efe07e",
+  "libressl_cflags": "-O2 -g plus configure-selected flags",
+  "ssh_cflags": "-Os -g plus configure-selected flags",
+  "notes": "Separate cleanup validation; not pooled with historical M1/M3 measurements.",
+  "chip": "Apple M1 Max",
+  "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0\nBuildVersion:\t\t26A428",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.25.1)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "power": "AC Power:\n Sleep On Power Button 1\n autorestartatconnect 0\n standby              0\n ttyskeepawake        1\n powernap             1\n displaysleep         30\n womp                 1\n networkoversleep     0\n sleep                0\n tcpkeepalive         1\n autorestart          0\n disksleep            10",
+  "thermal_before": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+  "utc": "20261115T030732Z",
+  "pairs": 5,
+  "mib": 512,
+  "thermal_after": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded"
+}

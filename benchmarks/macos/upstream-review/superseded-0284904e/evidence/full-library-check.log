@@ -1,0 +1,480 @@
+Making check in include
+Making check in openssl
+make[2]: Nothing to be done for `check'.
+make[2]: Nothing to be done for `check-am'.
+Making check in crypto
+/Applications/Xcode-beta.app/Contents/Developer/usr/bin/make  check-am
+make[2]: Nothing to be done for `check-am'.
+Making check in ssl
+ar dv /private/tmp/libressl-upstream-review/builds/libressl-neon/ssl/.libs/libssl.a \
+	    bs_ber.o bs_cbb.o bs_cbs.o
+ar: bs_ber.o: not found in archive
+ar: bs_cbb.o: not found in archive
+ar: bs_cbs.o: not found in archive
+make[1]: [remove_bs_objects] Error 1 (ignored)
+Making check in tls
+make[1]: Nothing to be done for `check'.
+Making check in apps
+Making check in ocspcheck
+make[2]: Nothing to be done for `check'.
+Making check in openssl
+make[2]: Nothing to be done for `check'.
+Making check in nc
+make[2]: Nothing to be done for `check'.
+make[2]: Nothing to be done for `check-am'.
+Making check in man
+make[1]: Nothing to be done for `check'.
+Making check in tests
+/Applications/Xcode-beta.app/Contents/Developer/usr/bin/make  aeadtest aes_test aes_wrap apitest arc4randomforktest asn1_string_to_utf8 asn1api asn1basic asn1complex asn1evp asn1object asn1oct asn1string_copy asn1test asn1time asn1x509 base64test bf_test bio_asn1 bio_chain bio_dump  bio_mem bn_add_sub bn_bits bn_cmp bn_convert bn_ffdh bn_gcd bn_isqrt bn_mod_exp bn_mod_inverse bn_mod_sqrt bn_mont bn_primes bn_print bn_shift bn_test bn_to_string bn_unit bn_word buffertest bytestringtest callback callbackfailures expirecallback casttest chachatest cipher_list cipherstest clienttest cmstest configtest constraints crypto_test cttest destest dhtest dsatest dtls_handshake_msg_test dtls_wire_test ecc_cdh ec_asn1_test ec_point_conversion ecdhtest ecdsatest ectest ed25519test err_test evp_ecx_test evp_pkey_cleanup evptest evp_test exdata_test explicit_bzero exportertest freenull gcm128test handshake_table hkdftest hmactest ideatest igetest key_schedule keypairtest lhash_test md_test mlkem_tests mlkem_iteration_tests mlkem_unittest name_constraints_test objectstest  optionstest pbkdf2  pkcs7test poly1305test policy pq_test quictest randtest rc2_test rc4_test recordtest record_layer_test renegotiation_test rfc3779 rfc5280time rmd_test rsa_method_test rsa_padding_test rsa_test servertest sha_test shutdowntest signertest sm3test sm4test ssl_get_shared_ciphers ssl_kex ssl_methods ssl_set_alpn_protos ssl_verify_param ssl_verify ssl_versions ssl_tlstest ssltest timingsafe tlsexttest tlslegacytest tlstest tls_ext_alpn tls_prf utf8test valid_handshakes_terminate x509_verify verifytest x25519test x509attribute x509_algor x509_asn1 x509_crl x509_extensions_test x509_info x509_name_test x509req_ext
+  CC       aeadtest.o
+  CC       aes_wrap.o
+  CC       aes_test.o
+  CC       apitest-apitest.o
+  CC       arc4randomforktest.o
+  CC       asn1_string_to_utf8.o
+  CC       asn1api.o
+  CC       asn1basic.o
+  CC       asn1complex.o
+  CC       asn1evp.o
+  CC       asn1object.o
+  CC       asn1oct.o
+  CC       asn1string_copy.o
+  CC       asn1test.o
+  CC       asn1time.o
+  CC       asn1x509.o
+  CC       base64test.o
+  CC       bf_test.o
+  CC       bio_asn1.o
+  CC       bio_chain.o
+  CC       bio_dump.o
+  CC       bio_mem.o
+  CC       bn_add_sub.o
+  CC       bn_bits.o
+  CC       bn_cmp.o
+  CC       bn_convert.o
+  CC       bn_ffdh.o
+  CC       bn_gcd.o
+  CC       bn_isqrt.o
+  CC       bn_mod_exp-bn_mod_exp.o
+  CC       bn_mod_inverse.o
+  CC       bn_mod_sqrt.o
+  CC       bn_mont.o
+  CC       bn_primes.o
+  CC       bn_print.o
+  CC       bn_shift.o
+  CC       bn_test-bn_test.o
+  CC       bn_to_string.o
+  CC       bn_unit.o
+  CC       bn_word.o
+  CC       buffertest.o
+  CC       bytestringtest.o
+  CC       callback.o
+  CC       callbackfailures.o
+  CC       expirecallback.o
+  CC       casttest.o
+  CC       chachatest.o
+  CC       cipher_list.o
+  CC       cipherstest.o
+  CC       clienttest.o
+  CC       cmstest.o
+  CC       configtest.o
+  CC       constraints.o
+  CC       crypto_test.o
+  CC       cttest-cttest.o
+  CC       destest.o
+  CC       dhtest.o
+  CC       dsatest.o
+  CC       dtls_handshake_msg_test.o
+  CC       dtls_wire_test.o
+  CC       ecc_cdh.o
+  CC       ec_asn1_test.o
+  CC       ec_point_conversion.o
+  CC       ecdhtest.o
+  CC       ecdsatest.o
+  CC       ectest.o
+  CC       ed25519test.o
+  CC       err_test.o
+  CC       evp_ecx_test.o
+  CC       evp_pkey_cleanup.o
+  CC       evptest.o
+  CC       evp_test.o
+  CC       exdata_test.o
+  CC       explicit_bzero.o
+  CC       exportertest.o
+  CC       freenull-freenull.o
+  CC       gcm128test.o
+  CC       handshake_table.o
+  CC       hkdf_test.o
+  CC       hmactest.o
+  CC       ideatest.o
+  CC       igetest.o
+  CC       key_schedule.o
+  CC       keypairtest-keypairtest.o
+  CC       lhash_test.o
+  CC       md_test.o
+  CC       test.o
+  CC       test_util.o
+  CC       mlkem_tests.o
+  CC       parse_test_file.o
+  CC       mlkem_iteration_tests.o
+  CC       mlkem_tests_util.o
+  CC       mlkem_unittest.o
+  CC       name_constraints_test.o
+  CC       objectstest.o
+  CC       optionstest.o
+  CC       pbkdf2.o
+  CC       pkcs7test.o
+  CC       poly1305test.o
+  CC       policy-policy.o
+  CC       pq_test.o
+  CC       quictest.o
+  CC       randtest.o
+  CC       rc2_test.o
+  CC       rc4_test.o
+  CC       recordtest.o
+  CC       record_layer_test.o
+  CC       renegotiation_test.o
+  CC       rfc3779-rfc3779.o
+  CC       rfc5280time.o
+  CC       rmd_test.o
+  CC       rsa_method_test.o
+  CC       rsa_padding_test.o
+  CC       rsa_test.o
+  CC       servertest.o
+  CC       sha_test.o
+  CC       shutdowntest.o
+  CC       signertest-signertest.o
+  CC       sm3test.o
+  CC       sm4test.o
+  CC       ssl_get_shared_ciphers-ssl_get_shared_ciphers.o
+  CC       ssl_kex.o
+  CC       ssl_methods.o
+  CC       ssl_set_alpn_protos.o
+  CC       ssl_verify_param.o
+  CC       ssl_verify.o
+  CC       ssl_versions.o
+  CC       ssl_tlstest.o
+  CC       ssltest.o
+  CC       timingsafe.o
+  CC       tlsexttest.o
+  CC       tlslegacytest.o
+  CC       tlstest.o
+  CC       compat/socketpair.o
+  CC       tls_ext_alpn.o
+  CC       tls_prf.o
+  CC       utf8test.o
+  CC       valid_handshakes_terminate.o
+  CC       x509_verify.o
+  CC       verifytest.o
+  CC       x25519test.o
+  CC       x509attribute.o
+  CC       x509_algor.o
+  CC       x509_asn1.o
+  CC       x509_crl.o
+  CC       x509_extensions_test.o
+  CC       x509_info.o
+  CC       x509_name_test.o
+  CC       x509req_ext.o
+  CCLD     aeadtest
+  CCLD     aes_test
+  CCLD     aes_wrap
+  CCLD     apitest
+  CCLD     arc4randomforktest
+  CCLD     asn1_string_to_utf8
+  CCLD     asn1api
+  CCLD     asn1basic
+  CCLD     asn1complex
+  CCLD     asn1evp
+  CCLD     asn1object
+  CCLD     asn1oct
+  CCLD     asn1string_copy
+  CCLD     asn1test
+  CCLD     asn1time
+  CCLD     asn1x509
+  CCLD     base64test
+  CCLD     bf_test
+  CCLD     bio_asn1
+  CCLD     bio_chain
+  CCLD     bio_dump
+  CCLD     bio_mem
+  CCLD     bn_add_sub
+  CCLD     bn_bits
+  CCLD     bn_cmp
+  CCLD     bn_convert
+  CCLD     bn_ffdh
+  CCLD     bn_gcd
+  CCLD     bn_isqrt
+  CCLD     bn_mod_exp
+  CCLD     bn_mod_inverse
+  CCLD     bn_mod_sqrt
+  CCLD     bn_mont
+  CCLD     bn_primes
+  CCLD     bn_print
+  CCLD     bn_shift
+  CCLD     bn_test
+  CCLD     bn_to_string
+  CCLD     bn_unit
+  CCLD     bn_word
+  CCLD     buffertest
+  CCLD     bytestringtest
+  CCLD     callback
+  CCLD     callbackfailures
+  CCLD     expirecallback
+  CCLD     casttest
+  CCLD     chachatest
+  CCLD     cipher_list
+  CCLD     cipherstest
+  CCLD     clienttest
+  CCLD     cmstest
+  CCLD     configtest
+  CCLD     constraints
+  CCLD     crypto_test
+  CCLD     destest
+  CCLD     cttest
+  CCLD     dhtest
+  CCLD     dsatest
+  CCLD     dtls_handshake_msg_test
+  CCLD     dtls_wire_test
+  CCLD     ecc_cdh
+  CCLD     ec_asn1_test
+  CCLD     ec_point_conversion
+  CCLD     ecdhtest
+  CCLD     ecdsatest
+  CCLD     ectest
+  CCLD     ed25519test
+  CCLD     err_test
+  CCLD     evp_ecx_test
+  CCLD     evp_pkey_cleanup
+  CCLD     evptest
+  CCLD     evp_test
+  CCLD     exdata_test
+  CCLD     explicit_bzero
+  CCLD     exportertest
+  CCLD     freenull
+  CCLD     gcm128test
+  CCLD     handshake_table
+  CCLD     hkdftest
+  CCLD     hmactest
+  CCLD     ideatest
+  CCLD     igetest
+  CCLD     key_schedule
+  CCLD     keypairtest
+  CCLD     lhash_test
+  CCLD     md_test
+  CCLD     mlkem_tests
+  CCLD     mlkem_iteration_tests
+  CCLD     mlkem_unittest
+  CCLD     name_constraints_test
+  CCLD     objectstest
+  CCLD     optionstest
+  CCLD     pbkdf2
+  CCLD     pkcs7test
+  CCLD     poly1305test
+  CCLD     policy
+  CCLD     pq_test
+  CCLD     quictest
+  CCLD     randtest
+  CCLD     rc2_test
+  CCLD     rc4_test
+  CCLD     recordtest
+  CCLD     record_layer_test
+  CCLD     renegotiation_test
+  CCLD     rfc3779
+  CCLD     rfc5280time
+  CCLD     rmd_test
+  CCLD     rsa_method_test
+  CCLD     rsa_padding_test
+  CCLD     rsa_test
+  CCLD     servertest
+  CCLD     sha_test
+  CC       compat/signertest-socketpair.o
+  CCLD     shutdowntest
+  CCLD     sm3test
+  CCLD     sm4test
+  CCLD     ssl_get_shared_ciphers
+  CCLD     ssl_kex
+  CCLD     ssl_methods
+  CCLD     ssl_set_alpn_protos
+  CCLD     ssl_verify_param
+  CCLD     ssl_verify
+  CCLD     ssl_versions
+  CCLD     ssl_tlstest
+  CCLD     ssltest
+  CCLD     timingsafe
+  CCLD     tlsexttest
+  CCLD     tlslegacytest
+  CCLD     tlstest
+  CCLD     tls_ext_alpn
+  CCLD     tls_prf
+  CCLD     utf8test
+  CCLD     valid_handshakes_terminate
+  CCLD     x509_verify
+  CCLD     verifytest
+  CCLD     x25519test
+  CCLD     x509attribute
+  CCLD     x509_algor
+  CCLD     x509_asn1
+  CCLD     x509_crl
+  CCLD     x509_extensions_test
+  CCLD     x509_info
+  CCLD     x509_name_test
+  CCLD     x509req_ext
+  CCLD     signertest
+/Applications/Xcode-beta.app/Contents/Developer/usr/bin/make  check-TESTS
+PASS: aes_test
+PASS: aes_wrap
+PASS: apitest
+PASS: aeadtest.sh
+PASS: asn1_string_to_utf8
+PASS: asn1api
+PASS: arc4randomforktest.sh
+PASS: asn1basic
+PASS: asn1complex
+PASS: asn1evp
+PASS: asn1object
+PASS: asn1string_copy
+PASS: asn1oct
+PASS: asn1test
+PASS: asn1time
+PASS: base64test
+PASS: asn1x509
+PASS: bio_asn1
+PASS: bio_chain
+PASS: bio_dump
+PASS: bf_test
+PASS: bn_add_sub
+PASS: bn_bits
+PASS: bn_cmp
+PASS: bio_mem
+PASS: bn_ffdh
+PASS: bn_convert
+PASS: bn_mod_inverse
+PASS: bn_gcd
+PASS: bn_isqrt
+PASS: bn_mod_sqrt
+PASS: bn_mont
+PASS: bn_print
+PASS: bn_shift
+PASS: bn_to_string
+PASS: bn_test
+PASS: bn_word
+PASS: buffertest
+PASS: bytestringtest
+PASS: x509_callbacks.sh
+PASS: bn_mod_exp
+PASS: casttest
+PASS: cipher_list
+PASS: chachatest
+PASS: bn_unit
+PASS: cipherstest
+PASS: clienttest
+PASS: cmstest
+PASS: constraints
+PASS: configtest
+PASS: destest
+PASS: cttest
+PASS: dhtest
+PASS: dsatest
+PASS: dtls_handshake_msg_test
+PASS: dtls_wire_test
+PASS: crypto_test
+PASS: ec_asn1_test
+PASS: ec_point_conversion
+PASS: ecdhtest
+PASS: ecc_cdh
+PASS: ectest
+PASS: ed25519test
+PASS: err_test
+PASS: evp_ecx_test
+PASS: ecdsatest
+PASS: evp_pkey_cleanup
+PASS: evp_test
+PASS: evptest.sh
+PASS: exdata_test
+PASS: explicit_bzero
+PASS: exportertest
+PASS: freenull
+PASS: gcm128test
+PASS: hkdftest
+PASS: handshake_table
+PASS: hmactest
+PASS: ideatest
+PASS: igetest
+PASS: key_schedule
+PASS: keypairtest.sh
+PASS: bn_primes
+PASS: mlkem_tests.sh
+PASS: mlkem_unittest
+PASS: md_test
+PASS: name_constraints_test
+PASS: objectstest
+PASS: optionstest
+PASS: pkcs7test
+PASS: pbkdf2
+PASS: poly1305test
+PASS: policy
+PASS: pq_test
+PASS: randtest
+PASS: quictest.sh
+PASS: rc2_test
+PASS: rc4_test
+PASS: recordtest
+PASS: record_layer_test
+PASS: rfc3779
+PASS: renegotiation_test.sh
+PASS: rfc5280time
+PASS: rmd_test
+PASS: rsa_padding_test
+PASS: rsa_method_test
+PASS: rsa_test
+PASS: servertest.sh
+PASS: sha_test
+PASS: signertest
+PASS: mlkem_iteration_tests
+PASS: sm3test
+PASS: shutdowntest.sh
+PASS: ssl_get_shared_ciphers
+PASS: ssl_kex
+PASS: ssl_methods
+PASS: sm4test
+PASS: ssl_set_alpn_protos
+PASS: ssl_verify_param
+PASS: ssl_versions
+PASS: lhash_test
+PASS: ssl_tlstest.sh
+PASS: testdsa.sh
+PASS: ssl_verify.sh
+PASS: timingsafe
+PASS: testrsa.sh
+PASS: tlsexttest
+PASS: tlslegacytest
+PASS: tls_ext_alpn
+PASS: tlstest.sh
+PASS: tls_prf
+PASS: ssltest.sh
+PASS: valid_handshakes_terminate
+PASS: testenc.sh
+PASS: verifytest
+PASS: x509attribute
+PASS: x25519test
+PASS: utf8test
+PASS: x509_algor
+PASS: x509_crl
+PASS: x509_verify.sh
+PASS: x509_extensions_test
+PASS: x509_info
+PASS: x509_name_test
+PASS: x509req_ext
+PASS: x509_asn1
+============================================================================
+Testsuite summary for libressl 4.4.1
+============================================================================
+# TOTAL: 145
+# PASS:  145
+# SKIP:  0
+# XFAIL: 0
+# FAIL:  0
+# XPASS: 0
+# ERROR: 0
+============================================================================
+make[1]: Nothing to be done for `check-am'.

@@ -1,0 +1,6 @@
+# Patch context intentionally preserves whitespace from the upstream source.
+*.diff -whitespace
+tech-mail.txt -whitespace
+# Preserve exact generated evidence and superseded-source hashes.
+evidence/** -whitespace
+superseded-0284904e/** -whitespace
