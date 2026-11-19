@@ -140,16 +140,19 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
 	(b) = CHACHA_NEON_ROTATE(veorq_u32((b), (c)), 7);		\
 } while (0)
 
-static void chacha_encrypt_four(chacha_ctx *, const u8 *, u8 *);
+static void chacha_encrypt_four(chacha_ctx *, const u8 *, u8 *,
+    const u8 *, u8 *);
 
 /*
- * Process four complete blocks. Each vector holds one state word from each
- * block; words 12 and 13 carry the low and high halves of the 64-bit counter.
+ * Process four blocks. The fourth has separate input and output pointers
+ * so a partial block can use the keystream cache. Each vector holds one
+ * word from each block. Words 12 and 13 hold the 64-bit counter.
  * Counter additions wrap modulo 2^64, as in the scalar implementation.
  * The byte permutations and output stores require a little-endian target.
  */
 static void
-chacha_encrypt_four(chacha_ctx *ctx, const u8 *in, u8 *out)
+chacha_encrypt_four(chacha_ctx *ctx, const u8 *in, u8 *out,
+    const u8 *last_in, u8 *last_out)
 {
 	const uint8x16_t rotate8 = {
 		3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10, 15, 12, 13, 14
@@ -198,10 +201,12 @@ chacha_encrypt_four(chacha_ctx *ctx, const u8 *in, u8 *out)
 		    vget_high_u32(c)));
 		rows[3] = vreinterpretq_u8_u32(vcombine_u32(vget_high_u32(b),
 		    vget_high_u32(d)));
-		for (k = 0; k < 4; k++) {
+		for (k = 0; k < 3; k++) {
 			vst1q_u8(out + k * 64 + i * 4,
 			    veorq_u8(vld1q_u8(in + k * 64 + i * 4), rows[k]));
 		}
+		vst1q_u8(last_out + i * 4,
+		    veorq_u8(vld1q_u8(last_in + i * 4), rows[3]));
 	}
 	counter += 4;
 	ctx->input[12] = (uint32_t)counter;
@@ -230,13 +235,27 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, u32 bytes)
 
 #ifdef CHACHA_USE_NEON
 	while (bytes >= 4 * CHACHA_BLOCKLEN) {
-		chacha_encrypt_four(x, m, c);
+		chacha_encrypt_four(x, m, c, m + 3 * CHACHA_BLOCKLEN,
+		    c + 3 * CHACHA_BLOCKLEN);
 		m += 4 * CHACHA_BLOCKLEN;
 		c += 4 * CHACHA_BLOCKLEN;
 		bytes -= 4 * CHACHA_BLOCKLEN;
 	}
 	if (bytes == 0) {
 		x->unused = 0;
+		return;
+	}
+	if (bytes > 3 * CHACHA_BLOCKLEN) {
+		static const u8 zeros[CHACHA_BLOCKLEN];
+
+		/* Encrypt zeros for the last block to keep its keystream. */
+		chacha_encrypt_four(x, m, c, zeros, x->ks);
+		m += 3 * CHACHA_BLOCKLEN;
+		c += 3 * CHACHA_BLOCKLEN;
+		bytes -= 3 * CHACHA_BLOCKLEN;
+		for (i = 0; i < bytes; i++)
+			c[i] = m[i] ^ x->ks[i];
+		x->unused = CHACHA_BLOCKLEN - bytes;
 		return;
 	}
 #endif

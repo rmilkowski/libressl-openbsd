@@ -414,8 +414,8 @@ static int
 chacha_bulk_test(void)
 {
 	static const size_t lengths[] = {
-		0, 1, 63, 64, 65, 255, 256, 257, 319, 320,
-		511, 512, 513, 767, 768, 769, 1023, 1024
+		0, 1, 63, 64, 65, 191, 192, 193, 255, 256, 257, 319, 320,
+		447, 448, 449, 511, 512, 513, 767, 768, 769, 1023, 1024
 	};
 	static const uint64_t counters[] = {
 		0, 1, UINT64_C(0xfffffffd), UINT64_C(0xffffffff),
