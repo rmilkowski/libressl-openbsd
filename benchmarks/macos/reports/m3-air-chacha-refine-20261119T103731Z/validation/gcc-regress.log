@@ -1,0 +1,2 @@
+gcc-15 (Homebrew GCC 15.2.0_1) 15.2.0
+PASS native arm64 public ChaCha regression (-Wno-attributes for the existing OpenBSD bounded annotations)

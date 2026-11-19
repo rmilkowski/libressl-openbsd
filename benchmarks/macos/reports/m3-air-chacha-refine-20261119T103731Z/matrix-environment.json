@@ -1,0 +1,105 @@
+{
+  "machine": "Apple M3",
+  "start": {
+    "utc": "2026-11-19T10:41:05.572773+00:00",
+    "power": "Now drawing from 'AC Power'",
+    "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "load": [
+      3.15234375,
+      3.06201171875,
+      3.17333984375
+    ]
+  },
+  "mode": [
+    "lowpowermode         0",
+    "AC Power:",
+    "lowpowermode         0"
+  ],
+  "round_starts": [
+    {
+      "utc": "2026-11-19T10:42:06.670645+00:00",
+      "power": "Now drawing from 'AC Power'",
+      "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "load": [
+        2.9951171875,
+        3.033203125,
+        3.15283203125
+      ]
+    },
+    {
+      "utc": "2026-11-19T10:43:54.106212+00:00",
+      "power": "Now drawing from 'AC Power'",
+      "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "load": [
+        3.3876953125,
+        3.125,
+        3.171875
+      ]
+    },
+    {
+      "utc": "2026-11-19T10:45:41.806874+00:00",
+      "power": "Now drawing from 'AC Power'",
+      "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "load": [
+        6.04931640625,
+        4.00732421875,
+        3.49609375
+      ]
+    },
+    {
+      "utc": "2026-11-19T10:47:29.310845+00:00",
+      "power": "Now drawing from 'AC Power'",
+      "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "load": [
+        4.9462890625,
+        4.162109375,
+        3.611328125
+      ]
+    },
+    {
+      "utc": "2026-11-19T10:49:16.948538+00:00",
+      "power": "Now drawing from 'AC Power'",
+      "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "load": [
+        3.560546875,
+        3.875,
+        3.55908203125
+      ]
+    },
+    {
+      "utc": "2026-11-19T10:51:04.536895+00:00",
+      "power": "Now drawing from 'AC Power'",
+      "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "load": [
+        3.60400390625,
+        3.8427734375,
+        3.58251953125
+      ]
+    },
+    {
+      "utc": "2026-11-19T10:52:52.190764+00:00",
+      "power": "Now drawing from 'AC Power'",
+      "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+      "load": [
+        3.2578125,
+        3.63330078125,
+        3.5283203125
+      ]
+    }
+  ],
+  "seed": 20261119,
+  "corpora_sha256": {
+    "random": "53e0f6e0ac2958e53ed1a64dd2389a08248756aa720ebf6e69c1818e11be72b6",
+    "text": "3bb4e9749a506708f719bc79c8d1a1cff619c5d017fa3382fe5c781ba7465bc0"
+  },
+  "finish": {
+    "utc": "2026-11-19T10:54:40.655743+00:00",
+    "power": "Now drawing from 'AC Power'",
+    "thermal": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded",
+    "load": [
+      3.5439453125,
+      3.69482421875,
+      3.56787109375
+    ]
+  }
+}

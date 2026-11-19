@@ -1,0 +1,27 @@
+{
+  "conclusion": "success",
+  "headSha": "def2be2066c57bf34f1f69402d8ed0c1b39e38ae",
+  "jobs": [
+    {
+      "databaseId": 135502097616,
+      "name": "ChaCha timing on ubuntu-24.04",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:37:25Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292360/job/135502097616"
+    },
+    {
+      "databaseId": 135502098487,
+      "name": "ChaCha timing on ubuntu-24.04-arm",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:54Z",
+      "completedAt": "2026-11-19T10:37:19Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292360/job/135502098487"
+    }
+  ],
+  "name": "ChaCha hosted CPU comparison",
+  "status": "completed",
+  "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292360"
+}

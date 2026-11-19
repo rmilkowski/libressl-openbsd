@@ -1,0 +1,2 @@
+# Unified diff context lines carry a leading space, including on blank lines.
+chacha-aarch64-neon-refine.diff -whitespace

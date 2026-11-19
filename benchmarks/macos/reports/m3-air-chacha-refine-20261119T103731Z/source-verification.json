@@ -1,0 +1,20 @@
+{
+  "scalar": "e728668de5d144b2150f2224bb1482fd3047c973e16289cfe6681c3202ea185e",
+  "reviewed": "efd979854b4c03138e603ea66faf4580049f9920676bdb2fb437a9ed9f132b69",
+  "refined": "c0e47640d77c37b823aebd9ae8243ac522a49c5507cb03b25eb349dd587b4260",
+  "patch_sha256": "54b4387ac0a202d3f86d9ed9103b03dc1e45312807b9c8a089e3246be1a1f1da",
+  "patch_applied_and_both_files_match": true,
+  "upstream_base": "1a8bfb53bc7034a8f877875aa833a8c3c10b8731",
+  "previous_patch": "5259b312e7d54bbcde9d13537f083dcd669c2cbb",
+  "refined_commit": "e904cc1ba13ecac94d9941311f5edf7e43a3c433",
+  "verified_against_openbsd_src": "2026-11-19",
+  "openbsd_base_blobs": {
+    "lib/libcrypto/chacha/chacha-merged.c": "debb776c8fedc5495759b2d540c00482ec55e227",
+    "regress/lib/libcrypto/chacha/chachatest.c": "4e159746173cf2f8e42722a64a11967ebe2629d5"
+  },
+  "refined_blobs": {
+    "lib/libcrypto/chacha/chacha-merged.c": "b29c705fe1bbb633997fda705497a502fde0174c",
+    "regress/lib/libcrypto/chacha/chachatest.c": "a0c882ce349dd5783fdf576ec9767a9cd683a4fe"
+  },
+  "ci_wrapper": "def2be2066c57bf34f1f69402d8ed0c1b39e38ae"
+}

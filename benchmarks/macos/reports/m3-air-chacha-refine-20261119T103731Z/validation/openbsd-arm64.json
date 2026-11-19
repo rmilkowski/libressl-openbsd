@@ -1,0 +1,8 @@
+{
+  "system": "OpenBSD 8.0 arm64, GENERIC.MP",
+  "compiler": "OpenBSD clang 22.1.6",
+  "environment": "GitHub Actions OpenBSD VM",
+  "normal_regression": "passed, CHACHA_USE_NEON defined",
+  "general_regs_only_regression": "passed, CHACHA_USE_NEON absent",
+  "job": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098451"
+}

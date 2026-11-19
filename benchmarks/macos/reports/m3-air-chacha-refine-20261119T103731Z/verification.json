@@ -1,0 +1,28 @@
+{
+  "source_commit": "e904cc1ba13ecac94d9941311f5edf7e43a3c433",
+  "report_is_child_of": "e904cc1ba13ecac94d9941311f5edf7e43a3c433",
+  "m3_evp": {
+    "measured": 648,
+    "warmups": 54
+  },
+  "m3_transfer_matrix": {
+    "measured": 108,
+    "warmups": 18
+  },
+  "independent_sftp": {
+    "measured": 18,
+    "warmups": 3
+  },
+  "transfer_checksums_matched": 147,
+  "hosted_cpu_samples_per_machine": {
+    "measured": 648,
+    "warmups": 54
+  },
+  "all_six_variant_orders_per_condition": true,
+  "recalculated_summary_byte_identical": true,
+  "acceptance_jobs_passed": 10,
+  "hosted_timing_jobs_passed": 2,
+  "local_suite_passed_per_build": 145,
+  "m3_source_builds_verified": 3,
+  "source_diff_reproduces_committed_files": true
+}

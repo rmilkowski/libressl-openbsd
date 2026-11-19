@@ -1,0 +1,99 @@
+{
+  "conclusion": "success",
+  "headSha": "def2be2066c57bf34f1f69402d8ed0c1b39e38ae",
+  "jobs": [
+    {
+      "databaseId": 135502098104,
+      "name": "OpenBSD 8.0 x86_64 ChaCha execution",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:38:24Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098104"
+    },
+    {
+      "databaseId": 135502098441,
+      "name": "Windows x64 shared=OFF",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:41:28Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098441"
+    },
+    {
+      "databaseId": 135502098451,
+      "name": "OpenBSD 8.0 aarch64 ChaCha execution",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:47:56Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098451"
+    },
+    {
+      "databaseId": 135502098509,
+      "name": "Windows Win32 shared=ON",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:40:49Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098509"
+    },
+    {
+      "databaseId": 135502098524,
+      "name": "Windows Win32 shared=OFF",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:41:25Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098524"
+    },
+    {
+      "databaseId": 135502098592,
+      "name": "Linux ubuntu-24.04-arm clang-asan-asm",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:54Z",
+      "completedAt": "2026-11-19T10:41:27Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098592"
+    },
+    {
+      "databaseId": 135502098604,
+      "name": "Linux ubuntu-24.04-arm gcc",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:54Z",
+      "completedAt": "2026-11-19T10:41:11Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098604"
+    },
+    {
+      "databaseId": 135502098607,
+      "name": "Windows x64 shared=ON",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:41:20Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098607"
+    },
+    {
+      "databaseId": 135502098701,
+      "name": "Linux ubuntu-24.04-arm clang-asan-noasm",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:54Z",
+      "completedAt": "2026-11-19T10:43:13Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098701"
+    },
+    {
+      "databaseId": 135502098880,
+      "name": "Linux ubuntu-24.04 gcc",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T10:36:52Z",
+      "completedAt": "2026-11-19T10:40:29Z",
+      "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358/job/135502098880"
+    }
+  ],
+  "name": "ChaCha acceptance checks",
+  "status": "completed",
+  "url": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292358"
+}

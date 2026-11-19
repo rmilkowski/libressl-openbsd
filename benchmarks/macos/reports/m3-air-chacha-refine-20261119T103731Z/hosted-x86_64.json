@@ -1,0 +1,19 @@
+{
+  "Kernel": "Linux 7.0.0-1014-aws x86_64",
+  "Architecture": "x86_64",
+  "Vendor ID": "GenuineIntel",
+  "Model name": "Intel(R) Xeon(R) 6975P-C",
+  "Hypervisor vendor": "KVM",
+  "Compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "identical_elf_text_sha256": {
+    "scalar": "ad62ed28bdc511e52a91c5f4c118bf23301d8896a8952ba9383636f272d44932",
+    "reviewed": "ad62ed28bdc511e52a91c5f4c118bf23301d8896a8952ba9383636f272d44932",
+    "refined": "ad62ed28bdc511e52a91c5f4c118bf23301d8896a8952ba9383636f272d44932"
+  },
+  "chacha_source_sha256": {
+    "scalar": "e728668de5d144b2150f2224bb1482fd3047c973e16289cfe6681c3202ea185e",
+    "reviewed": "efd979854b4c03138e603ea66faf4580049f9920676bdb2fb437a9ed9f132b69",
+    "refined": "c0e47640d77c37b823aebd9ae8243ac522a49c5507cb03b25eb349dd587b4260"
+  },
+  "run": "https://github.com/rmilkowski/libressl-openbsd/actions/runs/44507292360"
+}
