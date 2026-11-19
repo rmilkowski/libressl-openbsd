@@ -154,23 +154,20 @@ chacha_encrypt_four(chacha_ctx *ctx, const u8 *in, u8 *out)
 	const uint8x16_t rotate8 = {
 		3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10, 15, 12, 13, 14
 	};
+	const uint32x4_t offsets = { 0, 1, 2, 3 };
 	uint32x4_t x[16];
-	uint32x4_t a, b, base, c, d;
+	uint32x4_t a, b, c, carry, d;
 	uint8x16_t rows[4];
-	uint64_t counter, n;
-	uint32_t high[4], low[4];
+	uint64_t counter;
 	unsigned int i, k, r;
 
 	counter = ((uint64_t)ctx->input[13] << 32) | ctx->input[12];
-	for (k = 0; k < 4; k++) {
-		n = counter + k;
-		low[k] = (uint32_t)n;
-		high[k] = (uint32_t)(n >> 32);
-	}
 	for (i = 0; i < 16; i++)
 		x[i] = vdupq_n_u32(ctx->input[i]);
-	x[12] = vld1q_u32(low);
-	x[13] = vld1q_u32(high);
+	/* A wrapped lane has an all-ones mask. Subtraction adds its carry. */
+	x[12] = vaddq_u32(x[12], offsets);
+	carry = vcltq_u32(x[12], offsets);
+	x[13] = vsubq_u32(x[13], carry);
 
 	for (r = 0; r < 10; r++) {
 		CHACHA_NEON_QUARTERROUND(x[0], x[4], x[8], x[12]);
@@ -182,15 +179,10 @@ chacha_encrypt_four(chacha_ctx *ctx, const u8 *in, u8 *out)
 		CHACHA_NEON_QUARTERROUND(x[2], x[7], x[8], x[13]);
 		CHACHA_NEON_QUARTERROUND(x[3], x[4], x[9], x[14]);
 	}
-	for (i = 0; i < 16; i++) {
-		if (i == 12)
-			base = vld1q_u32(low);
-		else if (i == 13)
-			base = vld1q_u32(high);
-		else
-			base = vdupq_n_u32(ctx->input[i]);
-		x[i] = vaddq_u32(x[i], base);
-	}
+	for (i = 0; i < 16; i++)
+		x[i] = vaddq_u32(x[i], vdupq_n_u32(ctx->input[i]));
+	x[12] = vaddq_u32(x[12], offsets);
+	x[13] = vsubq_u32(x[13], carry);
 
 	/* Transpose four words at a time back into consecutive blocks. */
 	for (i = 0; i < 16; i += 4) {
